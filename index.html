@@ -1,7 +1,22 @@
-
 <!DOCTYPE html>
-<html>
-<body>
-<h1>QUESTO È DADICA — TEST UNICO 123</h1>
-</body>
+<html lang="it">
+  <body style="text-align:center; font-family:sans-serif; margin-top:60px;">
+    <h1>DADICA 🎲</h1>
+
+    <div id="dice" style="font-size:80px; cursor:pointer;">
+      🎲
+    </div>
+
+    <p id="result"></p>
+
+    <script>
+      const dice = document.getElementById("dice");
+      const result = document.getElementById("result");
+
+      dice.onclick = () => {
+        const n = Math.floor(Math.random() * 6) + 1;
+        result.innerText = "È uscito: " + n;
+      };
+    </script>
+  </body>
 </html>
