@@ -4,48 +4,94 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DADICA</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;padding:44px 16px;text-align:center;}
+    .wrap{max-width:720px;margin:0 auto;}
+    h1{margin:0 0 6px;font-size:44px;}
+    .muted{opacity:.7;margin:0 0 24px;}
+    button{font-size:18px;padding:12px 16px;border-radius:14px;border:1px solid #111;background:#111;color:#fff;cursor:pointer;margin:8px;}
+    button.secondary{background:#fff;color:#111;}
+    .card{margin:22px auto 0; padding:16px; border:1px solid #e5e5e5; border-radius:16px; text-align:left;}
+    .label{font-size:12px;text-transform:uppercase;letter-spacing:1px;opacity:.6;margin-bottom:8px;}
+    .big{font-size:22px;font-weight:750;margin:0 0 8px;}
+    .face{font-size:18px; margin:0;}
+    .tiny{font-size:13px;opacity:.65;margin-top:14px;}
+  </style>
 </head>
-<body style="text-align:center; font-family:sans-serif; margin-top:60px;">
+<body>
+  <div class="wrap">
+    <h1>DADICA 🎲</h1>
+    <p class="muted">Pesca un dado (in segreto). Poi lancia: l’Arcano del tappeto si rivela insieme alla faccia.</p>
 
-  <h1 style="margin-bottom:10px;">DADICA 🎲</h1>
-  <div style="opacity:.7; margin-bottom:30px;">Tocca il dado</div>
+    <div>
+      <button id="pick">Pesca un dado</button>
+      <button id="roll" class="secondary">Lancia il dado</button>
+    </div>
 
-  <div id="dice" style="font-size:90px; cursor:pointer; user-select:none;">🎲</div>
-
-  <div id="card" style="margin:30px auto; width:min(520px, 92vw); padding:18px; border:1px solid #ddd; border-radius:14px;">
-    <div id="symbol" style="font-size:64px; margin-bottom:8px;">ᚠ</div>
-    <div id="name" style="font-size:22px; font-weight:700;">Fehu</div>
-    <div id="meaning" style="margin-top:10px; font-size:16px; line-height:1.5; opacity:.85;">
-      Ricchezza, energia, inizio. Cosa stai nutrendo?
+    <div class="card" id="out">
+      <div class="label">Risultato</div>
+      <p class="big" id="arcano">Nessun lancio ancora.</p>
+      <p class="face" id="faccia"></p>
+      <div class="tiny" id="note"></div>
     </div>
   </div>
 
   <script>
-    // QUI cambi la lista: rune / simboli / archetipi del tappeto
-    const symbols = [
-      { symbol: "ᚠ", name: "Fehu", meaning: "Ricchezza, energia, inizio. Cosa stai nutrendo?" },
-      { symbol: "ᚢ", name: "Uruz", meaning: "Forza, corpo, resistenza. Dove serve coraggio?" },
-      { symbol: "ᚦ", name: "Thurisaz", meaning: "Soglia, protezione, attenzione. Cosa va filtrato?" },
-      { symbol: "ᚨ", name: "Ansuz", meaning: "Messaggio, voce, ispirazione. Cosa vuole essere detto?" },
-      { symbol: "ᚱ", name: "Raidho", meaning: "Viaggio, direzione, ritmo. Qual è il prossimo passo?" },
-      { symbol: "ᚲ", name: "Kenaz", meaning: "Luce, comprensione, fuoco creativo. Cosa illumini ora?" }
+    // 22 DADI = 22 Arcani (Rider–Waite–Smith). Per ora le facce sono etichette.
+    // Tu poi mi dai (o incolliamo) le 6 facce reali per ogni dado.
+    const DADI = [
+      { id: 0, roman: "0",  arcano: "Il Matto",     facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 1, roman: "I",  arcano: "Il Mago",      facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 2, roman: "II", arcano: "La Papessa",   facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 3, roman: "III",arcano: "L’Imperatrice",facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 4, roman: "IV", arcano: "L’Imperatore", facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 5, roman: "V",  arcano: "Il Papa",      facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 6, roman: "VI", arcano: "Gli Amanti",   facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 7, roman: "VII",arcano: "Il Carro",     facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 8, roman: "VIII",arcano:"La Giustizia", facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 9, roman: "IX", arcano: "L’Eremita",    facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 10,roman:"X",   arcano: "La Ruota",     facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 11,roman:"XI",  arcano: "La Forza",     facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 12,roman:"XII", arcano: "L’Appeso",     facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 13,roman:"XIII",arcano: "La Morte",     facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 14,roman:"XIV", arcano: "La Temperanza",facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 15,roman:"XV",  arcano: "Il Diavolo",   facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 16,roman:"XVI", arcano: "La Torre",     facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 17,roman:"XVII",arcano: "La Stella",    facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 18,roman:"XVIII",arcano:"La Luna",      facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 19,roman:"XIX", arcano: "Il Sole",      facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 20,roman:"XX",  arcano: "Il Giudizio",  facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
+      { id: 21,roman:"XXI", arcano: "Il Mondo",     facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
     ];
 
-    const dice = document.getElementById("dice");
-    const elSymbol = document.getElementById("symbol");
-    const elName = document.getElementById("name");
-    const elMeaning = document.getElementById("meaning");
+    let dadoSegreto = null;
 
-    function roll() {
-      const i = Math.floor(Math.random() * symbols.length);
-      const pick = symbols[i];
-      elSymbol.textContent = pick.symbol;
-      elName.textContent = pick.name;
-      elMeaning.textContent = pick.meaning;
-    }
+    const elArcano = document.getElementById("arcano");
+    const elFaccia = document.getElementById("faccia");
+    const elNote = document.getElementById("note");
 
-    dice.onclick = roll;
+    document.getElementById("pick").onclick = () => {
+      dadoSegreto = DADI[Math.floor(Math.random() * DADI.length)];
+      // reveal ZERO: non mostriamo nulla, solo conferma neutra
+      elArcano.textContent = "Dado pescato. Ora lancia.";
+      elFaccia.textContent = "";
+      elNote.textContent = "";
+    };
+
+    document.getElementById("roll").onclick = () => {
+      if (!dadoSegreto) {
+        elArcano.textContent = "Prima pesca un dado.";
+        elFaccia.textContent = "";
+        elNote.textContent = "";
+        return;
+      }
+      const faceIndex = Math.floor(Math.random() * 6);
+      const face = dadoSegreto.facce[faceIndex];
+
+      elArcano.textContent = `${dadoSegreto.roman} — ${dadoSegreto.arcano}`;
+      elFaccia.textContent = `Faccia uscita: ${face}`;
+      elNote.textContent = "Se serve più chiarezza o conferma, pesca un nuovo dado e rilancia (fino a 3).";
+    };
   </script>
-
 </body>
 </html>
