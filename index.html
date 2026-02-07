@@ -2,96 +2,505 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DADICA</title>
   <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;padding:44px 16px;text-align:center;}
-    .wrap{max-width:720px;margin:0 auto;}
-    h1{margin:0 0 6px;font-size:44px;}
-    .muted{opacity:.7;margin:0 0 24px;}
-    button{font-size:18px;padding:12px 16px;border-radius:14px;border:1px solid #111;background:#111;color:#fff;cursor:pointer;margin:8px;}
-    button.secondary{background:#fff;color:#111;}
-    .card{margin:22px auto 0; padding:16px; border:1px solid #e5e5e5; border-radius:16px; text-align:left;}
-    .label{font-size:12px;text-transform:uppercase;letter-spacing:1px;opacity:.6;margin-bottom:8px;}
-    .big{font-size:22px;font-weight:750;margin:0 0 8px;}
-    .face{font-size:18px; margin:0;}
-    .tiny{font-size:13px;opacity:.65;margin-top:14px;}
+    :root{
+      --bg:#ffffff;
+      --text:#111;
+      --muted:#666;
+      --card:#f6f6f6;
+      --border:#e6e6e6;
+      --btn:#111;
+      --btnText:#fff;
+      --btn2:#fff;
+      --btn2Text:#111;
+      --radius:18px;
+    }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      display:flex;
+      justify-content:center;
+      padding:28px 16px 40px;
+    }
+    .wrap{ width:min(680px, 100%); }
+    .titleRow{
+      display:flex; align-items:center; justify-content:center;
+      gap:14px; margin-top:10px;
+    }
+    h1{ margin:0; font-size:56px; letter-spacing:1px; }
+    .diceIcon{ font-size:44px; transform: translateY(4px); }
+    .subtitle{
+      text-align:center;
+      margin:14px auto 22px;
+      color:var(--muted);
+      font-size:18px;
+      line-height:1.35;
+      max-width: 46ch;
+    }
+    .btnRow{
+      display:flex; gap:14px; justify-content:center;
+      flex-wrap:wrap;
+      margin:18px 0 18px;
+    }
+    button{
+      border-radius:16px;
+      border:2px solid var(--btn);
+      padding:16px 20px;
+      font-size:20px;
+      cursor:pointer;
+      min-width: 220px;
+    }
+    .primary{
+      background:var(--btn);
+      color:var(--btnText);
+    }
+    .secondary{
+      background:var(--btn2);
+      color:var(--btn2Text);
+    }
+    button:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      padding:18px 18px;
+      margin-top:14px;
+    }
+    .label{
+      color:#8a8a8a;
+      font-size:14px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+    .bigArc{
+      font-size:38px;
+      font-weight:800;
+      margin:2px 0 8px;
+      line-height:1.1;
+    }
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+    }
+    .faceBox{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:14px 14px;
+    }
+    .faceTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:8px;
+    }
+    .faceTitle{ font-weight:700; }
+    .pill{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:#333;
+      white-space:nowrap;
+    }
+    .glyph{
+      font-size:56px;
+      line-height:1;
+      margin:8px 0 6px;
+      text-align:left;
+    }
+    .meaning{
+      color:#333;
+      font-size:16px;
+      line-height:1.35;
+    }
+    .twoCols{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+    .box{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:12px 12px;
+    }
+    .box h3{
+      margin:0 0 6px;
+      font-size:16px;
+    }
+    ul{ margin:6px 0 0 18px; padding:0; }
+    .smallMuted{ color:var(--muted); font-size:14px; line-height:1.35; }
+    .statusLine{
+      text-align:center;
+      color:var(--muted);
+      margin-top:6px;
+      font-size:14px;
+    }
+    .choiceRow{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .choiceRow button{ min-width: 0; flex: 1 1 240px; }
+    .tiny{
+      font-size:12px; color:var(--muted);
+      text-align:center; margin-top:10px;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>DADICA 🎲</h1>
-    <p class="muted">Pesca un dado (in segreto). Poi lancia: l’Arcano del tappeto si rivela insieme alla faccia.</p>
-
-    <div>
-      <button id="pick">Pesca un dado</button>
-      <button id="roll" class="secondary">Lancia il dado</button>
+    <div class="titleRow">
+      <h1>DADICA</h1>
+      <div class="diceIcon">🎲</div>
     </div>
 
-    <div class="card" id="out">
+    <div class="subtitle">
+      Pesca un dado (in segreto). Poi lancia: <b>l’Arcano del tappeto</b> si rivela insieme alla <b>faccia simbolica</b>.
+    </div>
+
+    <div class="btnRow">
+      <button id="pickBtn" class="primary">Pesca un dado</button>
+      <button id="rollBtn" class="secondary" disabled>Lancia il dado</button>
+    </div>
+
+    <div class="statusLine" id="statusLine">Pronta.</div>
+
+    <div class="card" id="resultCard" style="display:none;">
       <div class="label">Risultato</div>
-      <p class="big" id="arcano">Nessun lancio ancora.</p>
-      <p class="face" id="faccia"></p>
-      <div class="tiny" id="note"></div>
+
+      <div class="bigArc" id="arcanoTitle"></div>
+
+      <div class="grid2">
+        <div class="faceBox">
+          <div class="faceTop">
+            <div class="faceTitle">Faccia uscita</div>
+            <div class="pill" id="diceNamePill"></div>
+          </div>
+          <div class="glyph" id="faceGlyph">—</div>
+          <div class="meaning" id="faceMeaning"></div>
+        </div>
+
+        <div class="faceBox">
+          <div class="faceTop">
+            <div class="faceTitle">Interpretazione combinata</div>
+            <div class="pill" id="rollsPill"></div>
+          </div>
+          <div class="twoCols">
+            <div class="box">
+              <h3>Luce</h3>
+              <ul id="lightList"></ul>
+            </div>
+            <div class="box">
+              <h3>Ombra</h3>
+              <ul id="shadowList"></ul>
+            </div>
+            <div class="box">
+              <h3>Domanda guida</h3>
+              <div class="smallMuted" id="questionText"></div>
+            </div>
+          </div>
+
+          <div class="choiceRow">
+            <button id="againSameBtn" class="secondary">Rilancia lo stesso dado</button>
+            <button id="changeBtn" class="primary">Cambia dado e lancia</button>
+          </div>
+
+          <div class="tiny">Limite: massimo 3 lanci al giorno (si resetta da solo a mezzanotte).</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <script>
-    // 22 DADI = 22 Arcani (Rider–Waite–Smith). Per ora le facce sono etichette.
-    // Tu poi mi dai (o incolliamo) le 6 facce reali per ogni dado.
-    const DADI = [
-      { id: 0, roman: "0",  arcano: "Il Matto",     facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 1, roman: "I",  arcano: "Il Mago",      facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 2, roman: "II", arcano: "La Papessa",   facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 3, roman: "III",arcano: "L’Imperatrice",facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 4, roman: "IV", arcano: "L’Imperatore", facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 5, roman: "V",  arcano: "Il Papa",      facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 6, roman: "VI", arcano: "Gli Amanti",   facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 7, roman: "VII",arcano: "Il Carro",     facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 8, roman: "VIII",arcano:"La Giustizia", facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 9, roman: "IX", arcano: "L’Eremita",    facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 10,roman:"X",   arcano: "La Ruota",     facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 11,roman:"XI",  arcano: "La Forza",     facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 12,roman:"XII", arcano: "L’Appeso",     facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 13,roman:"XIII",arcano: "La Morte",     facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 14,roman:"XIV", arcano: "La Temperanza",facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 15,roman:"XV",  arcano: "Il Diavolo",   facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 16,roman:"XVI", arcano: "La Torre",     facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 17,roman:"XVII",arcano: "La Stella",    facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 18,roman:"XVIII",arcano:"La Luna",      facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 19,roman:"XIX", arcano: "Il Sole",      facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 20,roman:"XX",  arcano: "Il Giudizio",  facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-      { id: 21,roman:"XXI", arcano: "Il Mondo",     facce: ["Faccia 1","Faccia 2","Faccia 3","Faccia 4","Faccia 5","Faccia 6"] },
-    ];
+<script>
+/* ---------------------------
+   22 Arcani (stile Rider in IT)
+   (manteniamo la tua numerazione dove VIII = Giustizia)
+---------------------------- */
+const ARCANI = [
+  { id: "0",  name: "Il Matto",        core: "apertura, inizio, rischio, fiducia" },
+  { id: "I",  name: "Il Mago",         core: "azione, abilità, volontà, focus" },
+  { id: "II", name: "La Papessa",      core: "intuizione, segreto, ascolto, profondità" },
+  { id: "III",name: "L’Imperatrice",   core: "creatività, nutrimento, crescita, piacere" },
+  { id: "IV", name: "L’Imperatore",    core: "struttura, confini, autorità, stabilità" },
+  { id: "V",  name: "Il Papa",         core: "guida, valori, tradizione, insegnamento" },
+  { id: "VI", name: "Gli Innamorati",  core: "scelta, legame, coerenza, desiderio" },
+  { id: "VII",name: "Il Carro",        core: "direzione, vittoria, disciplina, slancio" },
+  { id: "VIII",name:"La Giustizia",    core: "equilibrio, verità, conseguenze, misura" },
+  { id: "IX", name: "L’Eremita",       core: "ricerca, pausa, saggezza, essenziale" },
+  { id: "X",  name: "La Ruota",        core: "ciclo, svolta, destino, opportunità" },
+  { id: "XI", name: "La Forza",        core: "coraggio, calma, istinto, cuore" },
+  { id: "XII",name: "L’Appeso",        core: "prospettiva, resa, attesa, cambio sguardo" },
+  { id: "XIII",name:"La Morte",        core: "fine, trasformazione, taglio, rinascita" },
+  { id: "XIV",name:"La Temperanza",    core: "armonia, cura, miscela, pazienza" },
+  { id: "XV", name:"Il Diavolo",       core: "attaccamento, desiderio, ombra, potere" },
+  { id: "XVI",name:"La Torre",         core: "scossa, verità, rottura, liberazione" },
+  { id: "XVII",name:"Le Stelle",       core: "speranza, ispirazione, guarigione, fiducia" },
+  { id: "XVIII",name:"La Luna",        core: "sogno, emozioni, paure, inconscio" },
+  { id: "XIX",name:"Il Sole",          core: "chiarezza, gioia, vitalità, verità" },
+  { id: "XX", name:"Il Giudizio",      core: "chiamata, risveglio, decisione, voce" },
+  { id: "XXI",name:"Il Mondo",         core: "compimento, integrazione, totalità, casa" }
+];
 
-    let dadoSegreto = null;
+/* ---------------------------
+   DADI (22) - 6 facce ciascuno
+   (copiati dai tuoi titoli: OPEN, LINK, HOLD, ...)
+   Le facce sono simboli/segni/keyword: così NON esce “faccia 4”
+---------------------------- */
+const PENTACLE = "⛤";
+const DICE = [
+  { name:"DADO 0",  faces:[
+    { glyph:"0",   tag:"numero",  meaning:"inizio/zero, reset" },
+    { glyph:"ᛈ",   tag:"runa",    meaning:"seme, potenziale" },
+    { glyph:"א",   tag:"lettera", meaning:"Aleph: origine, respiro" },
+    { glyph:"☉",   tag:"astro",   meaning:"Sole: identità, luce" },
+    { glyph:"OPEN",tag:"parola",  meaning:"apri, lascia entrare" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO I", faces:[
+    { glyph:"I",   tag:"numero",  meaning:"primo passo, volontà" },
+    { glyph:"ᚾ",   tag:"runa",    meaning:"necessità, bisogno" },
+    { glyph:"ב",   tag:"lettera", meaning:"Bet: casa, contenitore" },
+    { glyph:"☿",   tag:"astro",   meaning:"Mercurio: mente, scambio" },
+    { glyph:"LINK",tag:"parola",  meaning:"collega, unisci" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO II", faces:[
+    { glyph:"II",  tag:"numero",  meaning:"dualità, specchio" },
+    { glyph:"þ",   tag:"runa",    meaning:"soglia, svolta" },
+    { glyph:"ג",   tag:"lettera", meaning:"Gimel: ponte, passaggio" },
+    { glyph:"☽",   tag:"astro",   meaning:"Luna: emozioni, ritmo" },
+    { glyph:"HOLD",tag:"parola",  meaning:"tieni, trattieni" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO III", faces:[
+    { glyph:"III", tag:"numero",  meaning:"crescita, corpo" },
+    { glyph:"ᚠ",   tag:"runa",    meaning:"energia, risorsa" },
+    { glyph:"ᛏ",   tag:"runa",    meaning:"direzione, giuramento" },
+    { glyph:"♀",   tag:"astro",   meaning:"Venere: valore, piacere" },
+    { glyph:"NURSE",tag:"parola", meaning:"cura, nutri" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO IV", faces:[
+    { glyph:"IV",  tag:"numero",  meaning:"struttura, confine" },
+    { glyph:"ᚱ",   tag:"runa",    meaning:"ordine, legge" },
+    { glyph:"ה",   tag:"lettera", meaning:"He: respiro, rivelazione" },
+    { glyph:"♂",   tag:"astro",   meaning:"Marte: azione, taglio" },
+    { glyph:"ORDER",tag:"parola", meaning:"metti ordine" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO V", faces:[
+    { glyph:"V",   tag:"numero",  meaning:"valori, insegnamento" },
+    { glyph:"‹",   tag:"segno",   meaning:"ritorno, rientro" },
+    { glyph:"I",   tag:"numero",  meaning:"volontà, inizio" },
+    { glyph:"♃",   tag:"astro",   meaning:"Giove: fede, espansione" },
+    { glyph:"GUIDE",tag:"parola", meaning:"guida, orienta" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO VI", faces:[
+    { glyph:"VI",  tag:"numero",  meaning:"scelta, unione" },
+    { glyph:"X",   tag:"segno",   meaning:"incrocio, crocevia" },
+    { glyph:"ᛏ",   tag:"runa",    meaning:"decisione, direzione" },
+    { glyph:"♀",   tag:"astro",   meaning:"Venere: scelta di valore" },
+    { glyph:"CHOOSE",tag:"parola",meaning:"scegli, decidi" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO VII", faces:[
+    { glyph:"VII", tag:"numero",  meaning:"movimento, volontà" },
+    { glyph:"ᛈ",   tag:"runa",    meaning:"spinta, slancio" },
+    { glyph:"ᚾ",   tag:"runa",    meaning:"bisogno, motore" },
+    { glyph:"♂",   tag:"astro",   meaning:"Marte: muovi" },
+    { glyph:"MOVE",tag:"parola",  meaning:"muoviti" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO VIII", faces:[
+    { glyph:"VIII",tag:"numero",  meaning:"equilibrio/forza interiore" },
+    { glyph:"ᚺ",   tag:"runa",    meaning:"allineamento, asse" },
+    { glyph:"ש",   tag:"lettera", meaning:"Shin: fuoco, trasformazione" },
+    { glyph:"♄",   tag:"astro",   meaning:"Saturno: disciplina" },
+    { glyph:"ALIGN",tag:"parola", meaning:"allinea, centra" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO IX", faces:[
+    { glyph:"IX",  tag:"numero",  meaning:"ritiro, essenziale" },
+    { glyph:"†",   tag:"segno",   meaning:"taglio, separazione" },
+    { glyph:"I",   tag:"numero",  meaning:"uno, isolamento" },
+    { glyph:"☿",   tag:"astro",   meaning:"Mercurio: riconsidera" },
+    { glyph:"RETREAT",tag:"parola",meaning:"ritirati, prendi spazio" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO X", faces:[
+    { glyph:"X",   tag:"numero",  meaning:"svolta, ciclo" },
+    { glyph:"I",   tag:"numero",  meaning:"inizio" },
+    { glyph:"ב",   tag:"lettera", meaning:"Bet: casa/struttura" },
+    { glyph:"♃",   tag:"astro",   meaning:"Giove: svolta favorevole" },
+    { glyph:"TURN",tag:"parola",  meaning:"gira, cambia" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO XI", faces:[
+    { glyph:"XI",  tag:"numero",  meaning:"domare, integrare" },
+    { glyph:"ʃ",   tag:"segno",   meaning:"serpente/curva: addomestica" },
+    { glyph:"ל",   tag:"lettera", meaning:"Lamed: apprendimento" },
+    { glyph:"☉",   tag:"astro",   meaning:"Sole: rendi chiaro" },
+    { glyph:"TAME",tag:"parola",  meaning:"addomestica" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO XII", faces:[
+    { glyph:"XII", tag:"numero",  meaning:"pausa, sospensione" },
+    { glyph:"∫",   tag:"segno",   meaning:"flusso, rallenta" },
+    { glyph:"מ",   tag:"lettera", meaning:"Mem: acque profonde" },
+    { glyph:"♆",   tag:"astro",   meaning:"Nettuno: fermati, senti" },
+    { glyph:"PAUSE",tag:"parola", meaning:"pausa" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO XIII", faces:[
+    { glyph:"XIII",tag:"numero",  meaning:"fine/trasformazione" },
+    { glyph:"ᚲ",   tag:"runa",    meaning:"taglia, chiudi" },
+    { glyph:"ב",   tag:"lettera", meaning:"Bet: cambia casa/forma" },
+    { glyph:"♇",   tag:"astro",   meaning:"Plutone: trasforma" },
+    { glyph:"END", tag:"parola",  meaning:"fine" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO XIV", faces:[
+    { glyph:"XIV", tag:"numero",  meaning:"mescola, armonizza" },
+    { glyph:"Ψ",   tag:"segno",   meaning:"unione di opposti" },
+    { glyph:"ס",   tag:"lettera", meaning:"Samekh: sostegno" },
+    { glyph:"☿",   tag:"astro",   meaning:"Mercurio: miscela" },
+    { glyph:"MIX", tag:"parola",  meaning:"mescola" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO XV", faces:[
+    { glyph:"XV",  tag:"numero",  meaning:"legame, nodo" },
+    { glyph:"┘",   tag:"segno",   meaning:"vincolo, gancio" },
+    { glyph:"ש",   tag:"lettera", meaning:"Shin: fuoco/ombra" },
+    { glyph:"♄",   tag:"astro",   meaning:"Saturno: vincolo" },
+    { glyph:"BIND",tag:"parola",  meaning:"lega" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO XVI", faces:[
+    { glyph:"XVI", tag:"numero",  meaning:"rottura, verità" },
+    { glyph:"↑",   tag:"segno",   meaning:"spinta, shock" },
+    { glyph:"פ",   tag:"lettera", meaning:"Pe: parola/voce" },
+    { glyph:"♅",   tag:"astro",   meaning:"Urano: break" },
+    { glyph:"BREAK",tag:"parola", meaning:"rompi" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO XVII", faces:[
+    { glyph:"XVII",tag:"numero",  meaning:"speranza, guida" },
+    { glyph:"ᛒ",   tag:"runa",    meaning:"benedizione, dono" },
+    { glyph:"ᛉ",   tag:"runa",    meaning:"protezione" },
+    { glyph:"♃",   tag:"astro",   meaning:"Giove: fiducia" },
+    { glyph:"HOPE",tag:"parola",  meaning:"spera" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO XVIII", faces:[
+    { glyph:"XVIII",tag:"numero", meaning:"sogno, inconscio" },
+    { glyph:"ᛗ",   tag:"runa",    meaning:"immaginazione, mare" },
+    { glyph:"ק",   tag:"lettera", meaning:"Qof: sogno/ombra" },
+    { glyph:"☽",   tag:"astro",   meaning:"Luna: sogna" },
+    { glyph:"DREAM",tag:"parola", meaning:"sogna" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO XIX", faces:[
+    { glyph:"XIX", tag:"numero",  meaning:"luce, verità" },
+    { glyph:"ᛗ",   tag:"runa",    meaning:"risplendi" },
+    { glyph:"ר",   tag:"lettera", meaning:"Resh: testa/sole" },
+    { glyph:"☉",   tag:"astro",   meaning:"Sole: illumina" },
+    { glyph:"SHINE",tag:"parola", meaning:"brilla" },
+    { glyph:PENTACLE,tag:"sigillo",meaning:"protezione, cerchio" },
+  ]},
+  { name:"DADO XX", faces:[
+    { glyph:"XX",  tag:"numero",  meaning:"chiamata, risveglio" },
+    { glyph:"Γ",   tag:"segno",   meaning:"porta, annuncio" },
+    { glyph:"ש",   tag:"lettera", meaning:"Shin: fuoco/voce" },
+    { glyph:"♆",   tag:"astro",   meaning:"Nettuno: chiamata interiore" },
+    { glyph:"CALL",tag:"parola",  meaning:"chiama" },
+    { glyph:"ᛗ",   tag:"runa",    meaning:"messaggio, segnale" },
+  ]},
+  { name:"DADO XXI", faces:[
+    { glyph:"XXI", tag:"numero",  meaning:"intero, compimento" },
+    { glyph:"◇",   tag:"segno",   meaning:"forma completa" },
+    { glyph:"נ",   tag:"lettera", meaning:"Nun: vita/morte/ciclo" },
+    { glyph:"♄",   tag:"astro",   meaning:"Saturno: integrazione" },
+    { glyph:"WHOLE",tag:"parola", meaning:"intero" },
+    { glyph:"⋈",   tag:"segno",   meaning:"unione, totalità" },
+  ]},
+];
 
-    const elArcano = document.getElementById("arcano");
-    const elFaccia = document.getElementById("faccia");
-    const elNote = document.getElementById("note");
+/* ---------------------------
+   Limite 3 lanci al giorno (localStorage)
+---------------------------- */
+const MAX_ROLLS_PER_DAY = 3;
+function todayKey(){
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+function getRollState(){
+  const key = "dadica_rolls_" + todayKey();
+  const used = Number(localStorage.getItem(key) || "0");
+  return { key, used, left: Math.max(0, MAX_ROLLS_PER_DAY - used) };
+}
+function incRoll(){
+  const s = getRollState();
+  const next = Math.min(MAX_ROLLS_PER_DAY, s.used + 1);
+  localStorage.setItem(s.key, String(next));
+  return getRollState();
+}
 
-    document.getElementById("pick").onclick = () => {
-      dadoSegreto = DADI[Math.floor(Math.random() * DADI.length)];
-      // reveal ZERO: non mostriamo nulla, solo conferma neutra
-      elArcano.textContent = "Dado pescato. Ora lancia.";
-      elFaccia.textContent = "";
-      elNote.textContent = "";
-    };
+/* ---------------------------
+   Helpers random
+---------------------------- */
+function randInt(n){ return Math.floor(Math.random() * n); }
+function pickRandom(arr){ return arr[randInt(arr.length)]; }
 
-    document.getElementById("roll").onclick = () => {
-      if (!dadoSegreto) {
-        elArcano.textContent = "Prima pesca un dado.";
-        elFaccia.textContent = "";
-        elNote.textContent = "";
-        return;
-      }
-      const faceIndex = Math.floor(Math.random() * 6);
-      const face = dadoSegreto.facce[faceIndex];
+/* ---------------------------
+   Interpretazione generativa (Luce/Ombra)
+---------------------------- */
+function buildInterpretation(arc, face){
+  const base = `${arc.name}: ${arc.core}.`;
+  const faceLine = `Faccia "${face.glyph}" (${face.tag}): ${face.meaning}.`;
 
-      elArcano.textContent = `${dadoSegreto.roman} — ${dadoSegreto.arcano}`;
-      elFaccia.textContent = `Faccia uscita: ${face}`;
-      elNote.textContent = "Se serve più chiarezza o conferma, pesca un nuovo dado e rilancia (fino a 3).";
-    };
-  </script>
-</body>
-</html>
+  const light = [];
+  const shadow = [];
+
+  // regole semplici in base al tag
+  if(face.tag === "parola"){
+    light.push(`Azione chiara: applica "${face.glyph}" in modo concreto.`);
+    shadow.push(`Impulso o rigidità: "${face.glyph}" può diventare automatismo.`);
+  } else if(face.tag === "lettera" || face.tag === "runa"){
+    light.push(`Messaggio sottile: ascolta il simbolo come “chiave” intuitiva.`);
+    shadow.push(`Confusione simbolica: rischio di interpretare tutto e il contrario di tutto.`);
+  } else if(face.tag === "astro"){
+    light.push(`Energia planetaria come carburante: usa il tono di "${face.glyph}" per muoverti.`);
+    shadow.push(`Eccesso d’energia: la qualità di "${face.glyph}" può andare fuori misura.`);
+  } else if(face.tag === "sigillo"){
+    light.push(`Protezione/centratura: chiudi ciò che disperde e crea confini sani.`);
+    shadow.push(`Iper-protezione: chiuderti troppo può bloccare il flusso.`);
+  } else { // numero / segno
+    light.push(`Indicazione di ritmo: segui il “tempo” che il segno suggerisce.`);
+    shadow.push(`Fissazione sul segno: diventare superstiziosa invece che presente.`);
+  }
+
+  // aggiunta legata alla Giustizia / ecc: aggancio al core dell’arcano
+  light.push(`Porta ${arc.core} dentro la situazione di oggi, passo per passo.`);
+  shadow.push(`Quando ${arc.core} viene forzato, nasce tensione o resistenza.`);
+
+  const question =
+    `Se "${face.glyph}" incontrasse ${arc.name}, quale piccola scelta fa
