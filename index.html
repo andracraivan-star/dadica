@@ -80,27 +80,65 @@
     document.getElementById("risultato").innerHTML = html;
   }
 
-  // 22 dadi (per ora metto 2 esempi completi: aggiungi gli altri uguali)
-  // Ogni dado = 6 facce: { simbolo: "...", archetipo: "..." }
-  
+  // DADI: ogni dado = 6 facce (0..5)
+  const dadi = [
+    // DADO 0
+    [
+      { simbolo: "0", archetipo: "Numero 0" },
+      { simbolo: "ᚠ", archetipo: "Runa" },
+      { simbolo: "א", archetipo: "Lettera ebraica" },
+      { simbolo: "♄", archetipo: "Saturno" },
+      { simbolo: "OPEN", archetipo: "Parola chiave" },
+      { simbolo: "⛤", archetipo: "Pentacolo" }
+    ],
 
-    // TODO: aggiungi qui gli altri 20 dadi (stessa struttura)
+    // DADO I
+    [
+      { simbolo: "I", archetipo: "Numero I" },
+      { simbolo: "ᚢ", archetipo: "Runa" },
+      { simbolo: "ב", archetipo: "Lettera ebraica" },
+      { simbolo: "☿", archetipo: "Mercurio" },
+      { simbolo: "LINK", archetipo: "Parola chiave" },
+      { simbolo: "⛤", archetipo: "Pentacolo" }
+    ]
   ];
 
   const arcani = [
     "0 - Il Matto","I - Il Mago","II - La Papessa","III - L’Imperatrice","IV - L’Imperatore","V - Il Papa",
-    "VI - Gli Amanti","VII - Il Carro","VIII - La Giustizia","IX - L’Eremita","X - La Ruota",
-    "XI - La Forza","XII - L’Appeso","XIII - La Morte","XIV - La Temperanza","XV - Il Diavolo",
-    "XVI - La Torre","XVII - La Stella","XVIII - La Luna","XIX - Il Sole","XX - Il Giudizio","XXI - Il Mondo"
+    "VI - Gli Amanti","VII - Il Carro","VIII - La Giustizia","IX - L’Eremita","X - La Ruota","XI - La Forza",
+    "XII - L’Appeso","XIII - La Morte","XIV - La Temperanza","XV - Il Diavolo","XVI - La Torre","XVII - La Stella",
+    "XVIII - La Luna","XIX - Il Sole","XX - Il Giudizio","XXI - Il Mondo"
   ];
 
   document.getElementById("pesca").onclick = function(){
     dadoPescato = true;
-    dadoIndex = Math.floor(Math.random() * dadi.length); // sceglie quale dado (0..21 quando li metti tutti)
+    dadoIndex = Math.floor(Math.random() * dadi.length);
     mostra("Dado pescato. Ora lancia.");
   };
 
   document.getElementById("lancia").onclick = function(){
-    if(
+    if(!dadoPescato || dadoIndex === null){
+      alert("Prima pesca un dado");
+      return;
+    }
+
+    const facciaIndex = Math.floor(Math.random() * 6); // 0..5
+    const faccia = dadi[dadoIndex][facciaIndex];
+
+    const arcano = arcani[Math.floor(Math.random() * arcani.length)];
+
+    mostra(`
+      <div style="letter-spacing:2px; font-size:14px; opacity:.6;">DADO</div>
+      <div style="font-size:44px; margin-top:6px;">${faccia.simbolo}</div>
+      <div style="font-size:20px; margin-top:6px;">${faccia.archetipo}</div>
+
+      <div style="letter-spacing:2px; font-size:14px; opacity:.6; margin-top:18px;">TAPPETO</div>
+      <div style="font-size:30px; font-weight:800; margin-top:6px;">${arcano}</div>
+    `);
+
+    dadoPescato = false;
+    dadoIndex = null;
+  };
+</script>
 </body>
 </html>
