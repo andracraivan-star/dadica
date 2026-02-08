@@ -124,8 +124,8 @@ const uiText = {
   document.querySelector("h2").textContent = uiText[lingua].cercaTitolo;
   document.getElementById("cerca").textContent = uiText[lingua].cercaBtn;
 
-  selectParola.options[0].textContent = uiText[lingua].scegliSimbolo;
-  selectArcano.options[0].textContent = uiText[lingua].scegliArcano;
+  document.querySelector("#selectParola option[value='']").textContent = uiText[lingua].scegliSimbolo;
+document.querySelector("#selectArcano option[value='']").textContent = uiText[lingua].scegliArcano;
 }
     // stato
     let dadoPescato = false;
