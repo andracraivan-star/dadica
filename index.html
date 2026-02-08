@@ -496,7 +496,13 @@ function getParolaChiave(dado) {
   const arcano = arcani[Math.floor(Math.random() * arcani.length)];
 
   // ✅ usa il simbolo uscito (runa/ebraico/pianeta/pentacolo/parola)
-const simbolo = faccia.simbolo;
+let simbolo = faccia.simbolo;
+
+// se è una parola chiave ma NON è la faccia "Parola chiave", non usarla
+if (faccia.archetipo !== "Parola chiave" && significatoDadi[simbolo]) {
+  simbolo = null;
+}
+
 const frase = combina(simbolo, arcano);
 
   mostra(`
