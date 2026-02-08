@@ -92,7 +92,31 @@
     <p>Dadica è un sistema simbolico di autoconoscenza. Attraverso i dadi parlerà l’Archetipo presente in quel momento o situazione.</p>
   </details>
 
-  <script>
+  <script> 
+    let lingua = "it";
+
+const uiText = {
+  it: {
+    subtitle: "Pesca un dado. Poi lancia.",
+    pesca: "Pesca un dado",
+    lancia: "Lancia il dado",
+    cercaTitolo: "🔍 Cerca una combinazione",
+    cercaBtn: "Cerca combinazione",
+    scegliSimbolo: "— scegli il simbolo —",
+    scegliArcano: "— scegli l’arcano —",
+    errore: "Scegli simbolo e arcano."
+  },
+  en: {
+    subtitle: "Draw a die. Then roll.",
+    pesca: "Draw a die",
+    lancia: "Roll the die",
+    cercaTitolo: "🔍 Search a combination",
+    cercaBtn: "Search combination",
+    scegliSimbolo: "— choose a symbol —",
+    scegliArcano: "— choose an arcana —",
+    errore: "Choose a symbol and an arcana."
+  }
+};
     // stato
     let dadoPescato = false;
     let dadoIndex = null;
