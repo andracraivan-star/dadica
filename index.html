@@ -70,45 +70,73 @@
   </details>
 
   <script>
-    let dadoPescato = false;
+  // stato
+  let dadoPescato = false;
+  let indiceDadoScelto = null;
 
-    const simboliDado = ["⚪", "⚫", "🔴", "🟢", "🔵", "🟡"]; // sostituisci coi tuoi simboli
-    const archetipiDado = [
-  "Saturno",
-  "Luna",
-  "Marte",
-  "Venere",
-  "Mercurio",
-  "Sole"
-];
+  // 22 dadi (per ora mettiamo solo 1 dado di esempio + tappeto 22)
+  // IMPORTANTISSIMO: ogni DADO deve avere 6 facce.
+  const dadi = [
+    {
+      nome: "DADO VII",
+      facce: [
+        { simbolo: "⚫", archetipo: "Saturno" },
+        { simbolo: "⚪", archetipo: "Luna" },
+        { simbolo: "🔴", archetipo: "Marte" },
+        { simbolo: "🟢", archetipo: "Venere" },
+        { simbolo: "🔵", archetipo: "Mercurio" },
+        { simbolo: "🟡", archetipo: "Sole" },
+      ],
+    },
+  ];
 
-    function mostra(html){
-      document.getElementById("risultato").innerHTML = html;
+  const archetipiTappeto = [
+    "0 - Il Matto","I - Il Mago","II - La Papessa","III - L’Imperatrice","IV - L’Imperatore","V - Il Papa",
+    "VI - Gli Amanti","VII - Il Carro","VIII - La Giustizia","IX - L’Eremita","X - La Ruota","XI - La Forza",
+    "XII - L’Appeso","XIII - La Morte","XIV - La Temperanza","XV - Il Diavolo","XVI - La Torre","XVII - La Stella",
+    "XVIII - La Luna","XIX - Il Sole","XX - Il Giudizio","XXI - Il Mondo"
+  ];
+
+  function mostra(html){
+    document.getElementById("risultato").innerHTML = html;
+  }
+
+  document.getElementById("pesca").onclick = function () {
+    dadoPescato = true;
+
+    // scegli un dado (per ora solo 1: indice 0)
+    indiceDadoScelto = Math.floor(Math.random() * dadi.length);
+
+    mostra("Dado pescato. Ora lancia.");
+  };
+
+  document.getElementById("lancia").onclick = function () {
+    if (!dadoPescato) {
+      alert("Prima pesca un dado");
+      return;
     }
 
-    document.getElementById("pesca").onclick = function(){
-      dadoPescato = true;
-      mostra("🎲 Dado pescato. Ora lancia.");
-    };
+    // dado scelto + faccia 0..5 (6 facce)
+    const dado = dadi[indiceDadoScelto];
+    const indiceFaccia = Math.floor(Math.random() * 6);
+    const faccia = dado.facce[indiceFaccia];
 
-    document.getElementById("lancia").onclick = function(){
-      if(!dadoPescato){
-        alert("Prima pesca un dado");
-        return;
-      }
+    // tappeto (arcano) 0..21
+    const indiceArcano = Math.floor(Math.random() * archetipiTappeto.length);
+    const arcano = archetipiTappeto[indiceArcano];
 
-      const indiceDado = Math.floor(Math.random() * simboliDado.length);
-const simbolo = simboliDado[indiceDado];
-const archetipoDado = archetipiDado[indiceDado];
+    mostra(`
+      <div style="letter-spacing:2px; font-size:14px; opacity:.6;">DADO</div>
+      <div style="font-size:44px; margin-top:6px;">${faccia.simbolo}</div>
+      <div style="font-size:20px; margin-top:6px;">${faccia.archetipo}</div>
 
-      mostra(`
-  <div style="font-size:44px;">${simbolo}</div>
-  <div style="font-size:20px; margin-top:6px;">${archetipoDado}</div>
-  <div style="font-size:26px; font-weight:700; margin-top:14px;">${archetipo}</div>
-`);
+      <div style="letter-spacing:2px; font-size:14px; opacity:.6; margin-top:18px;">TAPPETO</div>
+      <div style="font-size:30px; font-weight:800; margin-top:6px;">${arcano}</div>
+    `);
 
-      dadoPescato = false;
-    };
+    // reset
+    dadoPescato = false;
+  };
   </script>
 </body>
 </html>
