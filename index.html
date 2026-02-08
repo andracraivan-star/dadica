@@ -409,6 +409,45 @@ function combina(parola, arcanoLabel) {
   dadoPescato = false;
   dadoIndex = null;
 });
+    // --- POPOLA I MENU "CERCA" ---
+const selectParola = document.getElementById("selectParola");
+const selectArcano = document.getElementById("selectArcano");
+const risultatoCerca = document.getElementById("risultatoCerca");
+
+// riempi parole chiave
+Object.keys(significatoDadi).forEach(k => {
+  const opt = document.createElement("option");
+  opt.value = k;
+  opt.textContent = k;
+  selectParola.appendChild(opt);
+});
+
+// riempi arcani
+arcani.forEach(a => {
+  const opt = document.createElement("option");
+  opt.value = a;
+  opt.textContent = a;
+  selectArcano.appendChild(opt);
+});
+
+// --- AZIONE DEL TASTO CERCA ---
+document.getElementById("cerca").addEventListener("click", () => {
+  const parola = selectParola.value;
+  const arcanoLabel = selectArcano.value;
+
+  if(!parola || !arcanoLabel){
+    risultatoCerca.innerHTML = `<div style="padding:12px; border:2px solid #333; border-radius:14px; background:#fff;">Scegli simbolo e arcano.</div>`;
+    return;
+  }
+
+  const frase = combina(parola, arcanoLabel);
+
+  risultatoCerca.innerHTML = `
+    <div style="padding:14px; border:2px solid #333; border-radius:14px; background:#fafafa; font-size:18px; line-height:1.35;">
+      ${frase}
+    </div>
+  `;
+});
   </script>
 </body>
 </html>
