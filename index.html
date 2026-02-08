@@ -499,7 +499,7 @@ if (faccia.archetipo !== "Parola chiave" && significatoDadi[simbolo]) {
   simbolo = null;
 }
 
-const frase = combina(simbolo, arcano);
+const frase = combina(simbolo, arcano, faccia.archetipo);
 
   mostra(`
     <div style="letter-spacing:2px; font-size:14px; opacity:.6;">DADO</div>
