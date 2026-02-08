@@ -292,7 +292,70 @@
       "XI - La Forza","XII - L’Appeso","XIII - La Morte","XIV - La Temperanza","XV - Il Diavolo",
       "XVI - La Torre","XVII - La Stella","XVIII - La Luna","XIX - Il Sole","XX - Il Giudizio","XXI - Il Mondo"
     ];
+// SIGNIFICATI DADI (parole chiave)
+const significatoDadi = {
+  OPEN:   "apre, sblocca, rende possibile",
+  LINK:   "connette, mette in relazione, crea un ponte",
+  HOLD:   "trattiene, stabilizza, chiede pazienza",
+  NURSE:  "cura, nutre, fa crescere con delicatezza",
+  ORDER:  "mette ordine, definisce confini, disciplina",
+  GUIDE:  "orienta, insegna, mostra la direzione",
+  CHOOSE: "porta a una scelta consapevole",
+  MOVE:   "spinge all’azione, avvia un movimento",
+  ALIGN:  "riallinea, riporta coerenza, aggiusta la rotta",
+  RETREAT:"ritira, protegge, invita al silenzio",
+  TURN:   "fa girare la ruota, cambia fase, svolta",
+  TAME:   "addomestica, canalizza, dà forma",
+  PAUSE:  "sospende, fa decantare, ascolta",
+  END:    "chiude, taglia, conclude",
+  MIX:    "mescola, armonizza, integra",
+  BIND:   "lega, vincola, attacca (con attenzione)",
+  BREAK:  "rompe, libera, spezza una struttura",
+  HOPE:   "ispira, rialza, riaccende fiducia",
+  DREAM:  "porta sogno, intuizione, immagini",
+  SHINE:  "illumina, chiarisce, mette in evidenza",
+  CALL:   "chiama, risveglia, convoca",
+  WHOLE:  "integra, completa, unifica"
+};
 
+// SIGNIFICATI ARCANI (tema/ambito)
+const significatoArcani = {
+  "0 - Il Matto": "inizio, salto nel vuoto, libertà",
+  "I - Il Mago": "volontà, risorse, manifestazione",
+  "II - La Papessa": "intuizione, mistero, interiorità",
+  "III - L’Imperatrice": "creatività, fertilità, abbondanza",
+  "IV - L’Imperatore": "struttura, autorità, confini",
+  "V - Il Papa": "valori, guida, tradizione",
+  "VI - Gli Amanti": "scelte, relazioni, allineamento del cuore",
+  "VII - Il Carro": "direzione, avanzamento, decisione",
+  "VIII - La Giustizia": "equilibrio, verità, conseguenze",
+  "IX - L’Eremita": "ritiro, ricerca, saggezza",
+  "X - La Ruota": "ciclo, cambiamento, svolta",
+  "XI - La Forza": "coraggio, controllo gentile, energia",
+  "XII - L’Appeso": "pausa, prospettiva nuova, resa",
+  "XIII - La Morte": "fine, trasformazione, taglio netto",
+  "XIV - La Temperanza": "armonia, integrazione, alchimia",
+  "XV - Il Diavolo": "desiderio, attaccamento, potere",
+  "XVI - La Torre": "crollo, verità che irrompe, liberazione",
+  "XVII - La Stella": "speranza, guarigione, fiducia",
+  "XVIII - La Luna": "inconscio, sogni, ambiguità",
+  "XIX - Il Sole": "chiarezza, vitalità, gioia",
+  "XX - Il Giudizio": "risveglio, chiamata, verità",
+  "XXI - Il Mondo": "compimento, integrazione, chiusura del ciclo"
+};
+
+// prende la PAROLA CHIAVE dal dado scelto (la faccia con archetipo "Parola chiave")
+function getParolaChiave(dado) {
+  const f = dado.find(x => (x.archetipo || "").toLowerCase().includes("parola"));
+  return f ? f.simbolo : null; // es: "OPEN"
+}
+
+// crea una frase combinata (DADO + ARCANO)
+function combina(parola, arcanoLabel) {
+  const azione = significatoDadi[parola] || "porta un’azione chiave";
+  const tema = significatoArcani[arcanoLabel] || "un tema centrale";
+  return `Il tuo Dado (${parola}) ${azione} dentro: ${tema}.`;
+}
     document.getElementById("pesca").addEventListener("click", () => {
       dadoPescato = true;
       dadoIndex = Math.floor(Math.random() * dadi.length);
