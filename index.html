@@ -98,10 +98,13 @@
       const simbolo = simboliDado[Math.floor(Math.random() * simboliDado.length)];
       const archetipo = archetipi[Math.floor(Math.random() * archetipi.length)];
 
-      mostra(
-        `<div style="font-size:44px;">${simbolo}</div>
-         <div style="font-size:26px;font-weight:700;margin-top:8px;">${archetipo}</div>`
-      );
+      mostra(`
+  <div style="font-size:14px; letter-spacing:2px; opacity:0.6;">DADO</div>
+  <div style="font-size:44px; margin-bottom:12px;">${simbolo}</div>
+
+  <div style="font-size:14px; letter-spacing:2px; opacity:0.6;">TAPPETO</div>
+  <div style="font-size:26px; font-weight:700;">${archetipo}</div>
+`);
 
       dadoPescato = false;
     };
