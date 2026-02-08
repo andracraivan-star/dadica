@@ -568,13 +568,17 @@ unici.forEach(s => {
   selectParola.appendChild(opt);
 });
 
-// riempi arcani
-arcani.forEach(a => {
-  const opt = document.createElement("option");
-  opt.value = a;
-  opt.textContent = a;
-  selectArcano.appendChild(opt);
-});
+function popolaMenuArcani() {
+  selectArcano.innerHTML = `<option value="">${uiText[lingua].scegliArcano}</option>`;
+  getArcani().forEach(a => {
+    const opt = document.createElement("option");
+    opt.value = a;
+    opt.textContent = a;
+    selectArcano.appendChild(opt);
+  });
+}
+
+popolaMenuArcani();
 
 // --- AZIONE DEL TASTO CERCA ---
 document.getElementById("cerca").addEventListener("click", () => {
