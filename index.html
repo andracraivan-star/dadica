@@ -133,13 +133,19 @@ const significatiDado = {
     const arcano = archetipiTappeto[indiceArcano];
 
     mostra(`
-      <div style="letter-spacing:2px; font-size:14px; opacity:.6;">DADO</div>
-      <div style="font-size:44px; margin-top:6px;">${faccia.simbolo}</div>
-      <div style="font-size:20px; margin-top:6px;">${faccia.archetipo}</div>
+  <div style="font-size:44px;">${simbolo}</div>
 
-      <div style="letter-spacing:2px; font-size:14px; opacity:.6; margin-top:18px;">TAPPETO</div>
-      <div style="font-size:30px; font-weight:800; margin-top:6px;">${arcano}</div>
-    `);
+  <div style="font-size:12px; letter-spacing:2px; margin-top:10px;">DADO</div>
+  <div style="font-size:20px; margin-top:6px;">${archetipoDado}</div>
+  <div style="font-size:16px; margin-top:4px; opacity:0.8;">
+    ${significatiDado[archetipoDado]}
+  </div>
+
+  <div style="font-size:12px; letter-spacing:2px; margin-top:16px;">TAPPETO</div>
+  <div style="font-size:26px; font-weight:700; margin-top:6px;">
+    ${archetipo}
+  </div>
+`);
 
     // reset
     dadoPescato = false;
