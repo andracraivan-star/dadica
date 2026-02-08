@@ -518,7 +518,9 @@ function combina(simbolo, arcanoLabel, archetipoFaccia) {
 
   // Se è una parola chiave
   if (archetipoFaccia === "Parola chiave") {
-    const azione = significatoDadi[simbolo] || (isEN ? "brings a key action" : "porta un’azione chiave");
+   const azione = isEN
+  ? significatoDadiEN[simbolo]
+  : significatoDadi[simbolo]; || (isEN ? "brings a key action" : "porta un’azione chiave");
     return isEN
       ? `Keyword: ${simbolo} → ${azione} within: ${tema}.`
       : `Parola chiave: ${simbolo} → ${azione} dentro: ${tema}.`;
