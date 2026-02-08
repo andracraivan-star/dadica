@@ -513,7 +513,8 @@ function combina(simbolo, arcanoLabel, archetipoFaccia) {
   const facciaIndex = Math.floor(Math.random() * 6);
   const faccia = dadi[dadoIndex][facciaIndex];
 
-  const arcano = arcani[Math.floor(Math.random() * arcani.length)];
+  const listaArcani = getArcani();
+const arcano = listaArcani[Math.floor(Math.random() * listaArcani.length)];
 
   // ✅ usa il simbolo uscito (runa/ebraico/pianeta/pentacolo/parola)
 let simbolo = faccia.simbolo;
