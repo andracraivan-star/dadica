@@ -523,11 +523,24 @@ const selectParola = document.getElementById("selectParola");
 const selectArcano = document.getElementById("selectArcano");
 const risultatoCerca = document.getElementById("risultatoCerca");
 
-// riempi parole chiave
-Object.keys(significatoDadi).forEach(k => {
+// riempi simboli (parole + rune + ebraico + pianeti + pentacolo)
+const tuttiISimboli = [
+  ...Object.keys(significatoDadi),      // OPEN, LINK, ecc.
+  ...Object.keys(significatoSimboli)    // ☉, ☿, ᚠ, א, ⛤, ecc.
+];
+
+// togli duplicati
+const unici = [...new Set(tuttiISimboli)];
+
+// aggiungi opzioni
+unici.forEach(s => {
   const opt = document.createElement("option");
-  opt.value = k;
-  opt.textContent = k;
+  opt.value = s;
+
+  // etichetta carina: "☿ — Mercurio" oppure "ᚠ — Fehu" oppure "OPEN"
+  const label = (significatoSimboli[s] || "").split(":")[0]; // prima del ":"
+  opt.textContent = label ? `${s} — ${label}` : s;
+
   selectParola.appendChild(opt);
 });
 
