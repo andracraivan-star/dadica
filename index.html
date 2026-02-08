@@ -508,16 +508,6 @@ function combina(simbolo, arcanoLabel, archetipoFaccia) {
     : `Simbolo: ${simbolo} (${archetipoFaccia}) → ${significato} dentro: ${tema}.`;
 }
 
-  // Se è una parola chiave
-  if (archetipoFaccia === "Parola chiave") {
-    const azione = significatoDadi[simbolo] || "porta un’azione chiave";
-    return `Parola chiave: ${simbolo} → ${azione} dentro: ${tema}.`;
-  }
-
-  // Altrimenti: runa / ebraico / pianeta / pentacolo / numero
-  const significato = significatoSimboli[simbolo] || "attiva un principio simbolico";
-  return `Simbolo: ${simbolo} (${archetipoFaccia}) → ${significato} dentro: ${tema}.`;
-}
     document.getElementById("pesca").addEventListener("click", () => {
       dadoPescato = true;
       dadoIndex = Math.floor(Math.random() * dadi.length);
