@@ -1,39 +1,38 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>DADICA</title>
 </head>
 
-<body style="
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-">
+<body style="text-align:center; font-family:sans-serif; margin-top:80px;">
 
-  <h1 style="font-size: 48px; margin-bottom: 10px;">
-    DADICA 🎲
-  </h1>
+  <h1 style="font-size:48px;">DADICA 🎲</h1>
+  <p>Pesca un dado. Poi lancia.</p>
 
-  <p style="font-size: 20px; margin-bottom: 30px;">
-    Pesca un dado. Poi lancia.
-  </p>
+  <button id="pesca">Pesca un dado</button>
+  <button id="lancia">Lancia il dado</button>
 
-  <div style="display: flex; gap: 12px;">
-    <button style="font-size: 18px; padding: 12px 18px;">
-      Pesca un dado
-    </button>
+  <div id="risultato" style="margin-top:40px; font-size:24px;"></div>
 
-    <button style="font-size: 18px; padding: 12px 18px;">
-      Lancia il dado
-    </button>
-  </div>
+  <script>
+    let dadoPescato = false;
+
+    document.getElementById("pesca").onclick = () => {
+      dadoPescato = true;
+      document.getElementById("risultato").innerText = "🎲 Dado pescato";
+    };
+
+    document.getElementById("lancia").onclick = () => {
+      if (!dadoPescato) {
+        alert("Prima pesca un dado");
+        return;
+      }
+      const faccia = Math.floor(Math.random() * 6) + 1;
+      document.getElementById("risultato").innerText =
+        "🎲 Faccia uscita: " + faccia;
+    };
+  </script>
 
 </body>
 </html>
