@@ -469,7 +469,7 @@ function getParolaChiave(dado) {
 
 // crea una frase combinata (DADO + ARCANO)
 function combina(parola, arcanoLabel) {
-  const azione = significatoDadi[parola] || "porta un’azione chiave";
+  const azione = significatoDadi[parola] || significatoSimboli[parola] || "porta un’azione chiave";
   const tema = significatoArcani[arcanoLabel] || "un tema centrale";
   return `Il tuo Dado (${parola}) ${azione} dentro: ${tema}.`;
 }
