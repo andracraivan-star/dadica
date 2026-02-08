@@ -482,7 +482,25 @@ const significatoSimboli = {
 };
 
 function combina(simbolo, arcanoLabel, archetipoFaccia) {
-  const tema = significatoArcani[arcanoLabel] || "un tema centrale";
+  const isEN = lingua === "en";
+
+  const tema = significatoArcani[arcanoLabel] || (isEN ? "a central theme" : "un tema centrale");
+
+  // Se è una parola chiave
+  if (archetipoFaccia === "Parola chiave") {
+    const azione = significatoDadi[simbolo] || (isEN ? "brings a key action" : "porta un’azione chiave");
+    return isEN
+      ? `Keyword: ${simbolo} → ${azione} within: ${tema}.`
+      : `Parola chiave: ${simbolo} → ${azione} dentro: ${tema}.`;
+  }
+
+  // Altrimenti: runa / ebraico / pianeta / pentacolo / numero
+  const significato = significatoSimboli[simbolo] || (isEN ? "activates a symbolic principle" : "attiva un principio simbolico");
+
+  return isEN
+    ? `Symbol: ${simbolo} (${archetipoFaccia}) → ${significato} within: ${tema}.`
+    : `Simbolo: ${simbolo} (${archetipoFaccia}) → ${significato} dentro: ${tema}.`;
+}
 
   // Se è una parola chiave
   if (archetipoFaccia === "Parola chiave") {
