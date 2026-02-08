@@ -102,49 +102,6 @@
       { simbolo: "⛤", archetipo: "Pentacolo" }
     ]
   ];
-    
-  // DADO II
-  [
-    { simbolo: "II", archetipo: "Numero II" },
-    { simbolo: "ᚦ", archetipo: "Runa" },
-    { simbolo: "ג", archetipo: "Lettera ebraica" },
-    { simbolo: "♀", archetipo: "Venere" },
-    { simbolo: "HOLD", archetipo: "Parola chiave" },
-    { simbolo: "⛤", archetipo: "Pentacolo" }
-  ],
-  const arcani = [
-    "0 - Il Matto","I - Il Mago","II - La Papessa","III - L’Imperatrice","IV - L’Imperatore","V - Il Papa",
-    "VI - Gli Amanti","VII - Il Carro","VIII - La Giustizia","IX - L’Eremita","X - La Ruota","XI - La Forza",
-    "XII - L’Appeso","XIII - La Morte","XIV - La Temperanza","XV - Il Diavolo","XVI - La Torre","XVII - La Stella",
-    "XVIII - La Luna","XIX - Il Sole","XX - Il Giudizio","XXI - Il Mondo"
-  ];
-
-  document.getElementById("pesca").onclick = function(){
-    dadoPescato = true;
-    dadoIndex = Math.floor(Math.random() * dadi.length);
-    mostra("Dado pescato. Ora lancia.");
-  };
-
-  document.getElementById("lancia").onclick = function(){
-    if(!dadoPescato || dadoIndex === null){
-      alert("Prima pesca un dado");
-      return;
-    }
-
-    const facciaIndex = Math.floor(Math.random() * 6); // 0..5
-    const faccia = dadi[dadoIndex][facciaIndex];
-
-    const arcano = arcani[Math.floor(Math.random() * arcani.length)];
-
-    mostra(`
-      <div style="letter-spacing:2px; font-size:14px; opacity:.6;">DADO</div>
-      <div style="font-size:44px; margin-top:6px;">${faccia.simbolo}</div>
-      <div style="font-size:20px; margin-top:6px;">${faccia.archetipo}</div>
-
-      <div style="letter-spacing:2px; font-size:14px; opacity:.6; margin-top:18px;">TAPPETO</div>
-      <div style="font-size:30px; font-weight:800; margin-top:6px;">${arcano}</div>
-    `);
-
     dadoPescato = false;
     dadoIndex = null;
   };
