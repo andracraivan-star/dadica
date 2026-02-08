@@ -461,14 +461,9 @@ const significatoSimboli = {
   "ת": "Tav: sigillo, compimento, destino"
 };
 
-// prende la PAROLA CHIAVE dal dado scelto (la faccia con archetipo "Parola chiave")
-function getParolaChiave(dado) {
-  const f = dado.find(x => (x.archetipo || "").toLowerCase().includes("parola"));
-  return f ? f.simbolo : null; // es: "OPEN"
-}
-
-// crea una frase combinata (DADO + ARCANO)
-  function combina(simbolo, arcanoLabel) {
+// ✅ usa il simbolo uscito (numero / runa / ebraico / pianeta / pentacolo / parola)
+const simbolo = faccia.simbolo;
+const frase = combina(simbolo, arcano);
   const significato =
     significatoDadi[simbolo] ||
     significatoSimboli[simbolo] ||
