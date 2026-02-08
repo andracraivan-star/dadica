@@ -95,8 +95,9 @@
         return;
       }
 
-      const simbolo = simboliDado[Math.floor(Math.random() * simboliDado.length)];
-      const archetipo = archetipi[Math.floor(Math.random() * archetipi.length)];
+      const indiceDado = Math.floor(Math.random() * simboliDado.length);
+const simbolo = simboliDado[indiceDado];
+const archetipoDado = archetipiDado[indiceDado];
 
       mostra(`
   <div style="font-size:14px; letter-spacing:2px; opacity:0.6;">DADO</div>
