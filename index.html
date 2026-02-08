@@ -58,11 +58,37 @@
       document.getElementById("risultato").innerText = "🎲 Dado pescato";
     };
 
-    document.getElementById("lancia").onclick = () => {
-      if (!dadoPescato) {
-        alert("Prima pesca un dado");
-        return;
-      }
+    document.getElementById("lancia").onclick = function () {
+  if (!dadoPescato) {
+    alert("Prima pesca un dado");
+    return;
+  }
+
+  // simboli del dado (placeholder per ora)
+  const simboliDado = ["ᚠ", "א", "☉", "☿", "OPEN", "⛤"];
+
+  // archetipi del tappeto (placeholder per ora)
+  const archetipiTappeto = [
+    "0 – Il Matto","I – Il Mago","II – La Papessa","III – L’Imperatrice",
+    "IV – L’Imperatore","V – Il Papa","VI – Gli Amanti","VII – Il Carro",
+    "VIII – La Giustizia","IX – L’Eremita","X – La Ruota","XI – La Forza",
+    "XII – L’Appeso","XIII – La Morte","XIV – La Temperanza","XV – Il Diavolo",
+    "XVI – La Torre","XVII – La Stella","XVIII – La Luna","XIX – Il Sole",
+    "XX – Il Giudizio","XXI – Il Mondo"
+  ];
+
+  const simbolo = simboliDado[Math.floor(Math.random() * simboliDado.length)];
+  const archetipo = archetipiTappeto[Math.floor(Math.random() * archetipiTappeto.length)];
+
+  // interpretazione combinata (placeholder per ora)
+  const testo = `Combinazione: ${simbolo} su ${archetipo}.`;
+
+  document.getElementById("risultato").innerHTML =
+    `<div style="font-size:44px; margin-bottom:10px;">${simbolo}</div>
+     <div style="font-size:24px; font-weight:700; margin-bottom:12px;">${archetipo}</div>
+     <div style="font-size:18px; line-height:1.5;">${testo}</div>`;
+};
+    
       const faccia = Math.floor(Math.random() * 6) + 1;
       document.getElementById("risultato").innerText =
         "🎲 Faccia uscita: " + faccia;
