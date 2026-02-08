@@ -64,7 +64,24 @@
     return;
   }
 
-  // simboli del dado (placeholder per ora)
+  document.getElementById("lancia").onclick = function () {
+  if (!dadoPescato) {
+    alert("Prima pesca un dado");
+    return;
+  }
+
+  const simboliDado = ["⚪", "⚫", "🔴", "🟢", "🔵", "⭐"];
+  const archetipi = [
+    "Il Matto", "Il Mago", "La Papessa",
+    "L’Imperatrice", "L’Imperatore", "Il Papa"
+  ];
+
+  const simbolo = simboliDado[Math.floor(Math.random() * simboliDado.length)];
+  const archetipo = archetipi[Math.floor(Math.random() * archetipi.length)];
+
+  document.getElementById("risultato").innerText =
+    simbolo + "  " + archetipo;
+};
   const simboliDado = ["ᚠ", "א", "☉", "☿", "OPEN", "⛤"];
 
   // archetipi del tappeto (placeholder per ora)
