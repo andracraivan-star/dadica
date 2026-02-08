@@ -363,28 +363,37 @@ function combina(parola, arcanoLabel) {
     });
 
     document.getElementById("lancia").addEventListener("click", () => {
-      if(!dadoPescato || dadoIndex === null){
-        alert("Prima pesca un dado");
-        return;
-      }
+  if(!dadoPescato || dadoIndex === null){
+    alert("Prima pesca un dado");
+    return;
+  }
 
-      const facciaIndex = Math.floor(Math.random() * 6);
-      const faccia = dadi[dadoIndex][facciaIndex];
-      const arcano = arcani[Math.floor(Math.random() * arcani.length)];
+  const facciaIndex = Math.floor(Math.random() * 6);
+  const faccia = dadi[dadoIndex][facciaIndex];
 
-      mostra(`
-        <div style="letter-spacing:2px; font-size:14px; opacity:.6;">DADO</div>
-        <div style="font-size:44px; margin-top:6px;">${faccia.simbolo}</div>
-        <div style="font-size:22px; margin-top:6px;">${faccia.archetipo}</div>
+  const arcano = arcani[Math.floor(Math.random() * arcani.length)];
 
-        <div style="letter-spacing:2px; font-size:14px; opacity:.6; margin-top:18px;">TAPPETO</div>
-        <div style="font-size:30px; font-weight:800; margin-top:6px;">${arcano}</div>
-      `);
+  // ✅ prendi la parola chiave dal DADO scelto (non dalla faccia uscita)
+  const parola = getParolaChiave(dadi[dadoIndex]); // es: "OPEN"
+  const frase = combina(parola, arcano);
 
-      // reset: per rifare pesca+lancio ogni volta
-      dadoPescato = false;
-      dadoIndex = null;
-    });
+  mostra(`
+    <div style="letter-spacing:2px; font-size:14px; opacity:.6;">DADO</div>
+    <div style="font-size:44px; margin-top:6px;">${faccia.simbolo}</div>
+    <div style="font-size:22px; margin-top:6px;">${faccia.archetipo}</div>
+
+    <div style="letter-spacing:2px; font-size:14px; opacity:.6; margin-top:18px;">TAPPETO</div>
+    <div style="font-size:30px; font-weight:800; margin-top:6px;">${arcano}</div>
+
+    <div style="margin-top:16px; padding:14px; border:2px solid #333; border-radius:14px; background:#fafafa; font-size:18px; line-height:1.35;">
+      ${frase}
+    </div>
+  `);
+
+  // reset
+  dadoPescato = false;
+  dadoIndex = null;
+});
   </script>
 </body>
 </html>
