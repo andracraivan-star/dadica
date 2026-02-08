@@ -484,7 +484,19 @@ document.getElementById("cerca").addEventListener("click", () => {
       ${frase}
     </div>
   `;
+}); 
+    document.getElementById("langIT").addEventListener("click", () => {
+  lingua = "it";
+  aggiornaTesti();
 });
+
+document.getElementById("langEN").addEventListener("click", () => {
+  lingua = "en";
+  aggiornaTesti();
+});
+
+// primo refresh
+aggiornaTesti();
   </script>
 </body>
 </html>
