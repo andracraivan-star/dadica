@@ -82,26 +82,7 @@
 
   // 22 dadi (per ora metto 2 esempi completi: aggiungi gli altri uguali)
   // Ogni dado = 6 facce: { simbolo: "...", archetipo: "..." }
-  const dadi = [
-    // DADO 0 (esempio: metti qui le tue 6 facce vere)
-    [
-      { simbolo: "0", archetipo: "Numero 0" },
-      { simbolo: "ᚠ", archetipo: "Runa (esempio)" },
-      { simbolo: "א", archetipo: "Lettera ebraica (esempio)" },
-      { simbolo: "♄", archetipo: "Saturno" },
-      { simbolo: "OPEN", archetipo: "Parola chiave" },
-      { simbolo: "PENT", archetipo: "Pentacolo" }
-    ],
-
-    // DADO I (esempio)
-    [
-      { simbolo: "I", archetipo: "Numero I" },
-      { simbolo: "ᚢ", archetipo: "Runa (esempio)" },
-      { simbolo: "ב", archetipo: "Lettera ebraica (esempio)" },
-      { simbolo: "☿", archetipo: "Mercurio" },
-      { simbolo: "LINK", archetipo: "Parola chiave" },
-      { simbolo: "PENT", archetipo: "Pentacolo" }
-    ],
+  
 
     // TODO: aggiungi qui gli altri 20 dadi (stessa struttura)
   ];
@@ -128,7 +109,26 @@
     const facciaIndex = Math.floor(Math.random() * 6);       // 6 facce: 0..5
     const faccia = dadi[dadoIndex][facciaIndex];
 
-    const arcano = arcani[Math.floor(Math.random() * arcani.length)];
+    const arcano = arcani[Math.floor(Math.random()const dadi = [
+    // DADO 0 (esempio: metti qui le tue 6 facce vere)
+    [
+      { simbolo: "0", archetipo: "Numero 0" },
+      { simbolo: "ᚠ", archetipo: "Runa (esempio)" },
+      { simbolo: "א", archetipo: "Lettera ebraica (esempio)" },
+      { simbolo: "♄", archetipo: "Saturno" },
+      { simbolo: "OPEN", archetipo: "Parola chiave" },
+      { simbolo: "PENT", archetipo: "Pentacolo" }
+    ],
+
+    // DADO I (esempio)
+    [
+      { simbolo: "I", archetipo: "Numero I" },
+      { simbolo: "ᚢ", archetipo: "Runa (esempio)" },
+      { simbolo: "ב", archetipo: "Lettera ebraica (esempio)" },
+      { simbolo: "☿", archetipo: "Mercurio" },
+      { simbolo: "LINK", archetipo: "Parola chiave" },
+      { simbolo: "PENT", archetipo: "Pentacolo" }
+    ], * arcani.length)];
 
     mostra(`
       <div style="letter-spacing:2px; font-size:14px; opacity:.6;">DADO</div>
