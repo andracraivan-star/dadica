@@ -461,17 +461,18 @@ const significatoSimboli = {
   "ת": "Tav: sigillo, compimento, destino"
 };
 
-// ✅ usa il simbolo uscito (numero / runa / ebraico / pianeta / pentacolo / parola)
-const simbolo = faccia.simbolo;
-const frase = combina(simbolo, arcano);
-  const significato =
-    significatoDadi[simbolo] ||
-    significatoSimboli[simbolo] ||
-    "attiva un principio simbolico";
-
+function combina(simbolo, arcanoLabel, archetipoFaccia) {
   const tema = significatoArcani[arcanoLabel] || "un tema centrale";
 
-  return `Il simbolo ${simbolo} ${significato} in relazione a: ${tema}.`;
+  // Se è una parola chiave
+  if (archetipoFaccia === "Parola chiave") {
+    const azione = significatoDadi[simbolo] || "porta un’azione chiave";
+    return `Parola chiave: ${simbolo} → ${azione} dentro: ${tema}.`;
+  }
+
+  // Altrimenti: runa / ebraico / pianeta / pentacolo / numero
+  const significato = significatoSimboli[simbolo] || "attiva un principio simbolico";
+  return `Simbolo: ${simbolo} (${archetipoFaccia}) → ${significato} dentro: ${tema}.`;
 }
     document.getElementById("pesca").addEventListener("click", () => {
       dadoPescato = true;
