@@ -116,7 +116,17 @@ const uiText = {
     scegliArcano: "— choose an arcana —",
     errore: "Choose a symbol and an arcana."
   }
-};
+};function aggiornaTesti() {
+  document.querySelector(".subtitle").textContent = uiText[lingua].subtitle;
+  document.getElementById("pesca").textContent = uiText[lingua].pesca;
+  document.getElementById("lancia").textContent = uiText[lingua].lancia;
+
+  document.querySelector("h2").textContent = uiText[lingua].cercaTitolo;
+  document.getElementById("cerca").textContent = uiText[lingua].cercaBtn;
+
+  selectParola.options[0].textContent = uiText[lingua].scegliSimbolo;
+  selectArcano.options[0].textContent = uiText[lingua].scegliArcano;
+}
     // stato
     let dadoPescato = false;
     let dadoIndex = null;
