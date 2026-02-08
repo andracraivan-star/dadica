@@ -495,9 +495,9 @@ function getParolaChiave(dado) {
 
   const arcano = arcani[Math.floor(Math.random() * arcani.length)];
 
-  // ✅ prendi la parola chiave dal DADO scelto (non dalla faccia uscita)
-  const parola = getParolaChiave(dadi[dadoIndex]); // es: "OPEN"
-  const frase = combina(parola, arcano);
+  // ✅ usa il simbolo uscito (runa/ebraico/pianeta/pentacolo/parola)
+const simbolo = faccia.simbolo;
+const frase = combina(simbolo, arcano);
 
   mostra(`
     <div style="letter-spacing:2px; font-size:14px; opacity:.6;">DADO</div>
