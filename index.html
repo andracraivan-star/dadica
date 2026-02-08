@@ -530,11 +530,8 @@ function combina(simbolo, arcanoLabel, archetipoFaccia) {
 
   const tema = significatoArcani[arcanoLabel] || (isEN ? "a central theme" : "un tema centrale");
 
-  // Se è una parola chiave
-  if (archetipoFaccia === "Parola chiave") {
-   const azione = isEN
-  ? significatoDadiEN[simbolo]
-  : significatoDadi[simbolo]; || (isEN ? "brings a key action" : "porta un’azione chiave");
+  const azione = (isEN ? significatoDadiEN[simbolo] : significatoDadi[simbolo])
+  || (isEN ? "brings a key action" : "porta un’azione chiave");
     return isEN
       ? `Keyword: ${simbolo} → ${azione} within: ${tema}.`
       : `Parola chiave: ${simbolo} → ${azione} dentro: ${tema}.`;
