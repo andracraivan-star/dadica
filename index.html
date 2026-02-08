@@ -468,10 +468,15 @@ function getParolaChiave(dado) {
 }
 
 // crea una frase combinata (DADO + ARCANO)
-function combina(parola, arcanoLabel) {
-  const azione = significatoDadi[parola] || significatoSimboli[parola] || "porta un’azione chiave";
+  function combina(simbolo, arcanoLabel) {
+  const significato =
+    significatoDadi[simbolo] ||
+    significatoSimboli[simbolo] ||
+    "attiva un principio simbolico";
+
   const tema = significatoArcani[arcanoLabel] || "un tema centrale";
-  return `Il tuo Dado (${parola}) ${azione} dentro: ${tema}.`;
+
+  return `Il simbolo ${simbolo} ${significato} in relazione a: ${tema}.`;
 }
     document.getElementById("pesca").addEventListener("click", () => {
       dadoPescato = true;
