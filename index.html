@@ -69,86 +69,79 @@
     <p>Dadica è un sistema simbolico di autoconoscenza. Attraverso i dadi parlerà l’Archetipo presente in quel momento o situazione.</p>
   </details>
 
+  
+
+    // reset
   <script>
-  // stato
   let dadoPescato = false;
-  let indiceDadoScelto = null;
+  let dadoIndex = null;
 
-  // 22 dadi (per ora mettiamo solo 1 dado di esempio + tappeto 22)
-  // IMPORTANTISSIMO: ogni DADO deve avere 6 facce.
-  const dadi = [
-    {
-      nome: "DADO VII",
-      facce: [
-        { simbolo: "⚫", archetipo: "Saturno" },
-        { simbolo: "⚪", archetipo: "Luna" },
-        { simbolo: "🔴", archetipo: "Marte" },
-        { simbolo: "🟢", archetipo: "Venere" },
-        { simbolo: "🔵", archetipo: "Mercurio" },
-        { simbolo: "🟡", archetipo: "Sole" },
-      ],
-    },
-  ];
-
-  const archetipiTappeto = [
-    "0 - Il Matto","I - Il Mago","II - La Papessa","III - L’Imperatrice","IV - L’Imperatore","V - Il Papa",
-    "VI - Gli Amanti","VII - Il Carro","VIII - La Giustizia","IX - L’Eremita","X - La Ruota","XI - La Forza",
-    "XII - L’Appeso","XIII - La Morte","XIV - La Temperanza","XV - Il Diavolo","XVI - La Torre","XVII - La Stella",
-    "XVIII - La Luna","XIX - Il Sole","XX - Il Giudizio","XXI - Il Mondo"
-  ];
-const significatiDado = {
-  "Saturno": "Struttura, limite, responsabilità, tempo che matura.",
-  "Luna": "Emozioni, inconscio, cicli, sensibilità.",
-  "Marte": "Azione, taglio, decisione, energia diretta.",
-  "Venere": "Relazione, valore, attrazione, armonia.",
-  "Mercurio": "Messaggio, scambio, mente, collegamento.",
-  "Sole": "Identità, chiarezza, vitalità, centro."
-};
   function mostra(html){
     document.getElementById("risultato").innerHTML = html;
   }
 
-  document.getElementById("pesca").onclick = function () {
+  // 22 dadi (per ora metto 2 esempi completi: aggiungi gli altri uguali)
+  // Ogni dado = 6 facce: { simbolo: "...", archetipo: "..." }
+  const dadi = [
+    // DADO 0 (esempio: metti qui le tue 6 facce vere)
+    [
+      { simbolo: "0", archetipo: "Numero 0" },
+      { simbolo: "ᚠ", archetipo: "Runa (esempio)" },
+      { simbolo: "א", archetipo: "Lettera ebraica (esempio)" },
+      { simbolo: "♄", archetipo: "Saturno" },
+      { simbolo: "OPEN", archetipo: "Parola chiave" },
+      { simbolo: "PENT", archetipo: "Pentacolo" }
+    ],
+
+    // DADO I (esempio)
+    [
+      { simbolo: "I", archetipo: "Numero I" },
+      { simbolo: "ᚢ", archetipo: "Runa (esempio)" },
+      { simbolo: "ב", archetipo: "Lettera ebraica (esempio)" },
+      { simbolo: "☿", archetipo: "Mercurio" },
+      { simbolo: "LINK", archetipo: "Parola chiave" },
+      { simbolo: "PENT", archetipo: "Pentacolo" }
+    ],
+
+    // TODO: aggiungi qui gli altri 20 dadi (stessa struttura)
+  ];
+
+  const arcani = [
+    "0 - Il Matto","I - Il Mago","II - La Papessa","III - L’Imperatrice","IV - L’Imperatore","V - Il Papa",
+    "VI - Gli Amanti","VII - Il Carro","VIII - La Giustizia","IX - L’Eremita","X - La Ruota",
+    "XI - La Forza","XII - L’Appeso","XIII - La Morte","XIV - La Temperanza","XV - Il Diavolo",
+    "XVI - La Torre","XVII - La Stella","XVIII - La Luna","XIX - Il Sole","XX - Il Giudizio","XXI - Il Mondo"
+  ];
+
+  document.getElementById("pesca").onclick = function(){
     dadoPescato = true;
-
-    // scegli un dado (per ora solo 1: indice 0)
-    indiceDadoScelto = Math.floor(Math.random() * dadi.length);
-
+    dadoIndex = Math.floor(Math.random() * dadi.length); // sceglie quale dado (0..21 quando li metti tutti)
     mostra("Dado pescato. Ora lancia.");
   };
 
-  document.getElementById("lancia").onclick = function () {
-    if (!dadoPescato) {
+  document.getElementById("lancia").onclick = function(){
+    if(!dadoPescato || dadoIndex === null){
       alert("Prima pesca un dado");
       return;
     }
 
-    // dado scelto + faccia 0..5 (6 facce)
-    const dado = dadi[indiceDadoScelto];
-    const indiceFaccia = Math.floor(Math.random() * 6);
-    const faccia = dado.facce[indiceFaccia];
+    const facciaIndex = Math.floor(Math.random() * 6);       // 6 facce: 0..5
+    const faccia = dadi[dadoIndex][facciaIndex];
 
-    // tappeto (arcano) 0..21
-    const indiceArcano = Math.floor(Math.random() * archetipiTappeto.length);
-    const arcano = archetipiTappeto[indiceArcano];
+    const arcano = arcani[Math.floor(Math.random() * arcani.length)];
 
     mostra(`
-  <div style="font-size:44px;">${simbolo}</div>
+      <div style="letter-spacing:2px; font-size:14px; opacity:.6;">DADO</div>
+      <div style="font-size:44px; margin-top:6px;">${faccia.simbolo}</div>
+      <div style="font-size:22px; margin-top:6px;">${faccia.archetipo}</div>
 
-  <div style="font-size:12px; letter-spacing:2px; margin-top:10px;">DADO</div>
-  <div style="font-size:20px; margin-top:6px;">${archetipoDado}</div>
-  <div style="font-size:16px; margin-top:4px; opacity:0.8;">
-    ${significatiDado[archetipoDado]}
-  </div>
-
-  <div style="font-size:12px; letter-spacing:2px; margin-top:16px;">TAPPETO</div>
-  <div style="font-size:26px; font-weight:700; margin-top:6px;">
-    ${archetipo}
-  </div>
-`);
+      <div style="letter-spacing:2px; font-size:14px; opacity:.6; margin-top:18px;">TAPPETO</div>
+      <div style="font-size:30px; font-weight:800; margin-top:6px;">${arcano}</div>
+    `);
 
     // reset
     dadoPescato = false;
+    dadoIndex = null;
   };
   </script>
 </body>
