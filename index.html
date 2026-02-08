@@ -17,6 +17,7 @@
       text-align:center;
       padding:24px;
       box-sizing:border-box;
+      background:#fff;
     }
     h1{
       font-size:72px;
@@ -33,11 +34,15 @@
       padding:14px 18px;
       border-radius:14px;
       margin:6px;
+      border:2px solid #333;
+      background:#eee;
     }
     #risultato{
       margin-top:18px;
       font-size:26px;
-      min-height:80px;
+      min-height:120px;
+      width:100%;
+      max-width:700px;
     }
     details{
       margin-top:18px;
@@ -69,260 +74,254 @@
     <p>Dadica è un sistema simbolico di autoconoscenza. Attraverso i dadi parlerà l’Archetipo presente in quel momento o situazione.</p>
   </details>
 
-  
-
-    
   <script>
-  let dadoPescato = false;
-  let dadoIndex = null;
+    // stato
+    let dadoPescato = false;
+    let dadoIndex = null;
 
-  function mostra(html){
-    document.getElementById("risultato").innerHTML = html;
-  }
-
-  // 22 DADI - ognuno ha 6 facce: Numero / Runa / Ebraico / Pianeta / Parola / Pentacolo
-  // (adesso metto già tutti i dadi con pianeti+parole; poi sostituisci RUNA/EBRAICO/PENT con i tuoi simboli reali)
-  const dadi = [
-    // DADO 0
-    [
-      { simbolo:"0", archetipo:"Numero 0" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"♄", archetipo:"Saturno" },
-      { simbolo:"OPEN", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO I
-    [
-      { simbolo:"I", archetipo:"Numero I" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"☿", archetipo:"Mercurio" },
-      { simbolo:"LINK", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO II
-    [
-      { simbolo:"II", archetipo:"Numero II" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"☾", archetipo:"Luna" },
-      { simbolo:"HOLD", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO III
-    [
-      { simbolo:"III", archetipo:"Numero III" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"♀", archetipo:"Venere" },
-      { simbolo:"NURSE", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO IV
-    [
-      { simbolo:"IV", archetipo:"Numero IV" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"♂", archetipo:"Marte" },
-      { simbolo:"ORDER", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO V
-    [
-      { simbolo:"V", archetipo:"Numero V" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"♃", archetipo:"Giove" },
-      { simbolo:"GUIDE", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO VI
-    [
-      { simbolo:"VI", archetipo:"Numero VI" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"♀", archetipo:"Venere" },
-      { simbolo:"CHOOSE", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO VII
-    [
-      { simbolo:"VII", archetipo:"Numero VII" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"♂", archetipo:"Marte" },
-      { simbolo:"MOVE", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO VIII
-    [
-      { simbolo:"VIII", archetipo:"Numero VIII" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"♄", archetipo:"Saturno" },
-      { simbolo:"ALIGN", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO IX
-    [
-      { simbolo:"IX", archetipo:"Numero IX" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"☿", archetipo:"Mercurio" },
-      { simbolo:"RETREAT", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO X
-    [
-      { simbolo:"X", archetipo:"Numero X" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"♃", archetipo:"Giove" },
-      { simbolo:"TURN", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO XI
-    [
-      { simbolo:"XI", archetipo:"Numero XI" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"☉", archetipo:"Sole" },
-      { simbolo:"TAME", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO XII
-    [
-      { simbolo:"XII", archetipo:"Numero XII" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"♆", archetipo:"Nettuno" },
-      { simbolo:"PAUSE", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO XIII
-    [
-      { simbolo:"XIII", archetipo:"Numero XIII" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"♇", archetipo:"Plutone" },
-      { simbolo:"END", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO XIV
-    [
-      { simbolo:"XIV", archetipo:"Numero XIV" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"☿", archetipo:"Mercurio" },
-      { simbolo:"MIX", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO XV
-    [
-      { simbolo:"XV", archetipo:"Numero XV" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"♄", archetipo:"Saturno" },
-      { simbolo:"BIND", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO XVI
-    [
-      { simbolo:"XVI", archetipo:"Numero XVI" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"♅", archetipo:"Urano" },
-      { simbolo:"BREAK", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO XVII
-    [
-      { simbolo:"XVII", archetipo:"Numero XVII" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"♃", archetipo:"Giove" },
-      { simbolo:"HOPE", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO XVIII
-    [
-      { simbolo:"XVIII", archetipo:"Numero XVIII" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"☾", archetipo:"Luna" },
-      { simbolo:"DREAM", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO XIX
-    [
-      { simbolo:"XIX", archetipo:"Numero XIX" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"☉", archetipo:"Sole" },
-      { simbolo:"SHINE", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO XX
-    [
-      { simbolo:"XX", archetipo:"Numero XX" },
-      { simbolo:"RUNA", archetipo:"Runa" },
-      { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-      { simbolo:"♆", archetipo:"Nettuno" },
-      { simbolo:"CALL", archetipo:"Parola chiave" },
-      { simbolo:"PENT", archetipo:"Pentacolo" }
-    ],
-    // DADO XXI
-[
-  { simbolo:"XXI", archetipo:"Numero XXI" },
-  { simbolo:"RUNA", archetipo:"Runa" },
-  { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
-  { simbolo:"♄", archetipo:"Saturno" },
-  { simbolo:"WHOLE", archetipo:"Parola chiave" },
-  { simbolo:"PENT", archetipo:"Pentacolo" }
-]
-];
-
-const arcani = [
-      
-
-  const arcani = [
-    "0 - Il Matto","I - Il Mago","II - La Papessa","III - L’Imperatrice","IV - L’Imperatore","V - Il Papa",
-    "VI - Gli Amanti","VII - Il Carro","VIII - La Giustizia","IX - L’Eremita","X - La Ruota",
-    "XI - La Forza","XII - L’Appeso","XIII - La Morte","XIV - La Temperanza","XV - Il Diavolo",
-    "XVI - La Torre","XVII - La Stella","XVIII - La Luna","XIX - Il Sole","XX - Il Giudizio","XXI - Il Mondo"
-  ];
-
-  document.getElementById("pesca").onclick = function(){
-    dadoPescato = true;
-    dadoIndex = Math.floor(Math.random() * dadi.length);
-    mostra("Dado pescato. Ora lancia.");
-  };
-
-  document.getElementById("lancia").onclick = function(){
-    if(!dadoPescato || dadoIndex === null){
-      alert("Prima pesca un dado");
-      return;
+    function mostra(html){
+      document.getElementById("risultato").innerHTML = html;
     }
 
-    const facciaIndex = Math.floor(Math.random() * 6);
-    const faccia = dadi[dadoIndex][facciaIndex];
+    // 22 DADI - ognuno ha 6 facce: Numero / Runa / Ebraico / Pianeta / Parola / Pentacolo
+    // Sostituisci RUNA / EBRAICO / PENT con i tuoi simboli reali quando vuoi.
+    const dadi = [
+      // 0
+      [
+        { simbolo:"0", archetipo:"Numero 0" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"♄", archetipo:"Saturno" },
+        { simbolo:"OPEN", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // I
+      [
+        { simbolo:"I", archetipo:"Numero I" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"☿", archetipo:"Mercurio" },
+        { simbolo:"LINK", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // II
+      [
+        { simbolo:"II", archetipo:"Numero II" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"☾", archetipo:"Luna" },
+        { simbolo:"HOLD", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // III
+      [
+        { simbolo:"III", archetipo:"Numero III" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"♀", archetipo:"Venere" },
+        { simbolo:"NURSE", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // IV
+      [
+        { simbolo:"IV", archetipo:"Numero IV" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"♂", archetipo:"Marte" },
+        { simbolo:"ORDER", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // V
+      [
+        { simbolo:"V", archetipo:"Numero V" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"♃", archetipo:"Giove" },
+        { simbolo:"GUIDE", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // VI
+      [
+        { simbolo:"VI", archetipo:"Numero VI" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"♀", archetipo:"Venere" },
+        { simbolo:"CHOOSE", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // VII
+      [
+        { simbolo:"VII", archetipo:"Numero VII" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"♂", archetipo:"Marte" },
+        { simbolo:"MOVE", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // VIII
+      [
+        { simbolo:"VIII", archetipo:"Numero VIII" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"♄", archetipo:"Saturno" },
+        { simbolo:"ALIGN", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // IX
+      [
+        { simbolo:"IX", archetipo:"Numero IX" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"☿", archetipo:"Mercurio" },
+        { simbolo:"RETREAT", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // X
+      [
+        { simbolo:"X", archetipo:"Numero X" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"♃", archetipo:"Giove" },
+        { simbolo:"TURN", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // XI
+      [
+        { simbolo:"XI", archetipo:"Numero XI" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"☉", archetipo:"Sole" },
+        { simbolo:"TAME", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // XII
+      [
+        { simbolo:"XII", archetipo:"Numero XII" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"♆", archetipo:"Nettuno" },
+        { simbolo:"PAUSE", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // XIII
+      [
+        { simbolo:"XIII", archetipo:"Numero XIII" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"♇", archetipo:"Plutone" },
+        { simbolo:"END", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // XIV
+      [
+        { simbolo:"XIV", archetipo:"Numero XIV" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"☿", archetipo:"Mercurio" },
+        { simbolo:"MIX", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // XV
+      [
+        { simbolo:"XV", archetipo:"Numero XV" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"♄", archetipo:"Saturno" },
+        { simbolo:"BIND", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // XVI
+      [
+        { simbolo:"XVI", archetipo:"Numero XVI" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"♅", archetipo:"Urano" },
+        { simbolo:"BREAK", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // XVII
+      [
+        { simbolo:"XVII", archetipo:"Numero XVII" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"♃", archetipo:"Giove" },
+        { simbolo:"HOPE", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // XVIII
+      [
+        { simbolo:"XVIII", archetipo:"Numero XVIII" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"☾", archetipo:"Luna" },
+        { simbolo:"DREAM", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // XIX
+      [
+        { simbolo:"XIX", archetipo:"Numero XIX" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"☉", archetipo:"Sole" },
+        { simbolo:"SHINE", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // XX
+      [
+        { simbolo:"XX", archetipo:"Numero XX" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"♆", archetipo:"Nettuno" },
+        { simbolo:"CALL", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+      // XXI
+      [
+        { simbolo:"XXI", archetipo:"Numero XXI" },
+        { simbolo:"RUNA", archetipo:"Runa" },
+        { simbolo:"EBRAICO", archetipo:"Lettera ebraica" },
+        { simbolo:"♄", archetipo:"Saturno" },
+        { simbolo:"WHOLE", archetipo:"Parola chiave" },
+        { simbolo:"PENT", archetipo:"Pentacolo" }
+      ],
+    ];
 
-    const arcano = arcani[Math.floor(Math.random() * arcani.length)];
+    const arcani = [
+      "0 - Il Matto","I - Il Mago","II - La Papessa","III - L’Imperatrice","IV - L’Imperatore","V - Il Papa",
+      "VI - Gli Amanti","VII - Il Carro","VIII - La Giustizia","IX - L’Eremita","X - La Ruota",
+      "XI - La Forza","XII - L’Appeso","XIII - La Morte","XIV - La Temperanza","XV - Il Diavolo",
+      "XVI - La Torre","XVII - La Stella","XVIII - La Luna","XIX - Il Sole","XX - Il Giudizio","XXI - Il Mondo"
+    ];
 
-    mostra(`
-      <div style="letter-spacing:2px; font-size:14px; opacity:.6;">DADO</div>
-      <div style="font-size:44px; margin-top:6px;">${faccia.simbolo}</div>
-      <div style="font-size:22px; margin-top:6px;">${faccia.archetipo}</div>
+    document.getElementById("pesca").addEventListener("click", () => {
+      dadoPescato = true;
+      dadoIndex = Math.floor(Math.random() * dadi.length);
+      mostra("🎲 Dado pescato. Ora lancia.");
+    });
 
-      <div style="letter-spacing:2px; font-size:14px; opacity:.6; margin-top:18px;">TAPPETO</div>
-      <div style="font-size:30px; font-weight:800; margin-top:6px;">${arcano}</div>
-    `);
+    document.getElementById("lancia").addEventListener("click", () => {
+      if(!dadoPescato || dadoIndex === null){
+        alert("Prima pesca un dado");
+        return;
+      }
 
-    // reset
-    dadoPescato = false;
-    dadoIndex = null;
-  };
+      const facciaIndex = Math.floor(Math.random() * 6);
+      const faccia = dadi[dadoIndex][facciaIndex];
+      const arcano = arcani[Math.floor(Math.random() * arcani.length)];
+
+      mostra(`
+        <div style="letter-spacing:2px; font-size:14px; opacity:.6;">DADO</div>
+        <div style="font-size:44px; margin-top:6px;">${faccia.simbolo}</div>
+        <div style="font-size:22px; margin-top:6px;">${faccia.archetipo}</div>
+
+        <div style="letter-spacing:2px; font-size:14px; opacity:.6; margin-top:18px;">TAPPETO</div>
+        <div style="font-size:30px; font-weight:800; margin-top:6px;">${arcano}</div>
+      `);
+
+      // reset: per rifare pesca+lancio ogni volta
+      dadoPescato = false;
+      dadoIndex = null;
+    });
   </script>
 </body>
 </html>
