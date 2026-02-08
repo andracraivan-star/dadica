@@ -101,48 +101,6 @@
   };
 
   document.getElementById("lancia").onclick = function(){
-    if(!dadoPescato || dadoIndex === null){
-      alert("Prima pesca un dado");
-      return;
-    }
-
-    const facciaIndex = Math.floor(Math.random() * 6);       // 6 facce: 0..5
-    const faccia = dadi[dadoIndex][facciaIndex];
-
-    const arcano = arcani[Math.floor(Math.random()const dadi = [
-    // DADO 0 (esempio: metti qui le tue 6 facce vere)
-    [
-      { simbolo: "0", archetipo: "Numero 0" },
-      { simbolo: "ᚠ", archetipo: "Runa (esempio)" },
-      { simbolo: "א", archetipo: "Lettera ebraica (esempio)" },
-      { simbolo: "♄", archetipo: "Saturno" },
-      { simbolo: "OPEN", archetipo: "Parola chiave" },
-      { simbolo: "PENT", archetipo: "Pentacolo" }
-    ],
-
-    // DADO I (esempio)
-    [
-      { simbolo: "I", archetipo: "Numero I" },
-      { simbolo: "ᚢ", archetipo: "Runa (esempio)" },
-      { simbolo: "ב", archetipo: "Lettera ebraica (esempio)" },
-      { simbolo: "☿", archetipo: "Mercurio" },
-      { simbolo: "LINK", archetipo: "Parola chiave" },
-      { simbolo: "PENT", archetipo: "Pentacolo" }
-    ], * arcani.length)];
-
-    mostra(`
-      <div style="letter-spacing:2px; font-size:14px; opacity:.6;">DADO</div>
-      <div style="font-size:44px; margin-top:6px;">${faccia.simbolo}</div>
-      <div style="font-size:22px; margin-top:6px;">${faccia.archetipo}</div>
-
-      <div style="letter-spacing:2px; font-size:14px; opacity:.6; margin-top:18px;">TAPPETO</div>
-      <div style="font-size:30px; font-weight:800; margin-top:6px;">${arcano}</div>
-    `);
-
-    // reset
-    dadoPescato = false;
-    dadoIndex = null;
-  };
-  </script>
+    if(
 </body>
 </html>
