@@ -1,53 +1,39 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DADICA</title>
 </head>
 
-<body style="text-align:center; font-family:sans-serif; margin-top:60px;">
+<body style="
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+">
 
-<h1>DADICA 🎲</h1>
+  <h1 style="font-size: 48px; margin-bottom: 10px;">
+    DADICA 🎲
+  </h1>
 
-<p>Pesca un dado. Poi lancia.</p>
+  <p style="font-size: 20px; margin-bottom: 30px;">
+    Pesca un dado. Poi lancia.
+  </p>
 
-<button onclick="pescaDado()">Pesca un dado</button>
-<button onclick="lanciaDado()">Lancia il dado</button>
+  <div style="display: flex; gap: 12px;">
+    <button style="font-size: 18px; padding: 12px 18px;">
+      Pesca un dado
+    </button>
 
-<div id="risultato" style="margin-top:30px; font-size:20px;"></div>
-
-<script>
-let dadoPescato = null;
-
-const arcani = [
-  "0 – Il Matto","I – Il Mago","II – La Papessa","III – L’Imperatrice",
-  "IV – L’Imperatore","V – Il Papa","VI – Gli Amanti","VII – Il Carro",
-  "VIII – La Giustizia","IX – L’Eremita","X – La Ruota",
-  "XI – La Forza","XII – L’Appeso","XIII – La Morte",
-  "XIV – La Temperanza","XV – Il Diavolo","XVI – La Torre",
-  "XVII – La Stella","XVIII – La Luna","XIX – Il Sole",
-  "XX – Il Giudizio","XXI – Il Mondo"
-];
-
-function pescaDado() {
-  dadoPescato = Math.floor(Math.random() * 22);
-  document.getElementById("risultato").innerText =
-    "Dado pescato. Ora lancia.";
-}
-
-function lanciaDado() {
-  if (dadoPescato === null) {
-    alert("Prima pesca un dado");
-    return;
-  }
-
-  const faccia = Math.floor(Math.random() * 6) + 1;
-  const arcano = arcani[Math.floor(Math.random() * arcani.length)];
-
-  document.getElementById("risultato").innerHTML =
-    "<b>" + arcano + "</b><br>Faccia uscita: " + faccia;
-}
-</script>
+    <button style="font-size: 18px; padding: 12px 18px;">
+      Lancia il dado
+    </button>
+  </div>
 
 </body>
 </html>
