@@ -676,7 +676,14 @@ const tuttiISimboli = [
 const unici = [...new Set(tuttiISimboli)];
 
 // aggiungi opzioni
+unici.forEach(s => {
+  const opt = document.createElement("option");
+  opt.value = s;
 
+  const label = (significatoSimboli[s] || "").split(":")[0].trim();
+
+  selectParola.appendChild(opt);
+});
 // --- AZIONE DEL TASTO CERCA ---
 document.getElementById("cerca").addEventListener("click", () => {
   const parola = selectParola.value;
