@@ -238,40 +238,8 @@ aggiornaTesti();
 aggiornaDropdownArcani();
 
 /* ===== PATCH END (pezzo 2) ===== */
-    let lingua = "it";
+  
 
-const uiText = {
-  it: {
-    subtitle: "Pesca un dado. Poi lancia.",
-    pesca: "Pesca un dado",
-    lancia: "Lancia il dado",
-    cercaTitolo: "🔍 Cerca una combinazione",
-    cercaBtn: "Cerca combinazione",
-    scegliSimbolo: "— scegli il simbolo —",
-    scegliArcano: "— scegli l’arcano —",
-    errore: "Scegli simbolo e arcano."
-  },
-  en: {
-    subtitle: "Draw a die. Then roll.",
-    pesca: "Draw a die",
-    lancia: "Roll the die",
-    cercaTitolo: "🔍 Search a combination",
-    cercaBtn: "Search combination",
-    scegliSimbolo: "— choose a symbol —",
-    scegliArcano: "— choose an arcana —",
-    errore: "Choose a symbol and an arcana."
-  }
-};function aggiornaTesti() {
-  document.querySelector(".subtitle").textContent = uiText[lingua].subtitle;
-  document.getElementById("pesca").textContent = uiText[lingua].pesca;
-  document.getElementById("lancia").textContent = uiText[lingua].lancia;
-
-  document.querySelector("h2").textContent = uiText[lingua].cercaTitolo;
-  document.getElementById("cerca").textContent = uiText[lingua].cercaBtn;
-
-  document.querySelector("#selectParola option[value='']").textContent = uiText[lingua].scegliSimbolo;
-document.querySelector("#selectArcano option[value='']").textContent = uiText[lingua].scegliArcano;
-}
     // stato
     let dadoPescato = false;
     let dadoIndex = null;
