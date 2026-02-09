@@ -118,9 +118,7 @@
   </details>
 
   <script> 
-    window.addEventListener("error", e => alert("JS ERROR: " + e.message));
-window.addEventListener("unhandledrejection", e => alert("PROMISE ERROR: " + (e.reason?.message || e.reason)));
-    /* ===== PATCH START (pezzo 1) ===== */
+  
 let lingua = "it";
 
 const uiText = {
@@ -171,7 +169,6 @@ function aggiornaTesti(){
   if(op1) op1.textContent = t("scegliSimbolo");
   if(op2) op2.textContent = t("scegliArcano");
 }
-/* ===== PATCH END (pezzo 1) ===== *//* ===== PATCH START (pezzo 2) ===== */
 
 // 1) Arcani IT/EN + funzione che restituisce la lista giusta
 const arcaniIT = [
