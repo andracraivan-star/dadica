@@ -234,10 +234,8 @@ function aggiornaDropdownArcani(){
 }
 
 // 4) Primo refresh all’avvio
-aggiornaTesti();
-aggiornaDropdownArcani();
 
-/* ===== PATCH END (pezzo 2) ===== */
+
   
 
     // stato
@@ -451,23 +449,7 @@ aggiornaDropdownArcani();
 ],
     ];
 
-    const arcaniIT = [
-  "0 - Il Matto","I - Il Mago","II - La Papessa","III - L’Imperatrice","IV - L’Imperatore","V - Il Papa",
-  "VI - Gli Amanti","VII - Il Carro","VIII - La Giustizia","IX - L’Eremita","X - La Ruota",
-  "XI - La Forza","XII - L’Appeso","XIII - La Morte","XIV - La Temperanza","XV - Il Diavolo",
-  "XVI - La Torre","XVII - La Stella","XVIII - La Luna","XIX - Il Sole","XX - Il Giudizio","XXI - Il Mondo"
-];
 
-const arcaniEN = [
-  "0 - The Fool","I - The Magician","II - The High Priestess","III - The Empress","IV - The Emperor","V - The Hierophant",
-  "VI - The Lovers","VII - The Chariot","VIII - Justice","IX - The Hermit","X - Wheel of Fortune",
-  "XI - Strength","XII - The Hanged Man","XIII - Death","XIV - Temperance","XV - The Devil",
-  "XVI - The Tower","XVII - The Star","XVIII - The Moon","XIX - The Sun","XX - Judgement","XXI - The World"
-];
-
-function getArcani() {
-  return lingua === "en" ? arcaniEN : arcaniIT;
-}
 // SIGNIFICATI DADI (parole chiave)
 const significatoDadi = {
   OPEN:   "apre, sblocca, rende possibile",
@@ -694,28 +676,6 @@ const tuttiISimboli = [
 const unici = [...new Set(tuttiISimboli)];
 
 // aggiungi opzioni
-unici.forEach(s => {
-  const opt = document.createElement("option");
-  opt.value = s;
-
-  // etichetta carina: "☿ — Mercurio" oppure "ᚠ — Fehu" oppure "OPEN"
-  const label = (significatoSimboli[s] || "").split(":")[0]; // prima del ":"
-  opt.textContent = label ? `${s} — ${label}` : s;
-
-  selectParola.appendChild(opt);
-});
-
-function popolaMenuArcani() {
-  selectArcano.innerHTML = `<option value="">${uiText[lingua].scegliArcano}</option>`;
-  getArcani().forEach(a => {
-    const opt = document.createElement("option");
-    opt.value = a;
-    opt.textContent = a;
-    selectArcano.appendChild(opt);
-  });
-}
-
-popolaMenuArcani();
 
 // --- AZIONE DEL TASTO CERCA ---
 document.getElementById("cerca").addEventListener("click", () => {
@@ -735,15 +695,6 @@ document.getElementById("cerca").addEventListener("click", () => {
     </div>
   `;
 }); 
-    document.getElementById("langIT").addEventListener("click", () => {
-  lingua = "it";
-  aggiornaTesti();
-});
-
-document.getElementById("langEN").addEventListener("click", () => {
-  lingua = "en";
-  aggiornaTesti();
-});
 
 // primo refresh
 aggiornaTesti();
