@@ -118,6 +118,8 @@
   </details>
 
   <script> 
+    window.addEventListener("error", e => alert("JS ERROR: " + e.message));
+window.addEventListener("unhandledrejection", e => alert("PROMISE ERROR: " + (e.reason?.message || e.reason)));
     /* ===== PATCH START (pezzo 1) ===== */
 let lingua = "it";
 
