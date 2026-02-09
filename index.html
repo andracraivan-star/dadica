@@ -118,6 +118,126 @@
   </details>
 
   <script> 
+    /* ===== PATCH START (pezzo 1) ===== */
+let lingua = "it";
+
+const uiText = {
+  it: {
+    subtitle: "Porta l’attenzione al cuore, respira, lancia quando ti senti in pace.",
+    pesca: "Pesca un dado",
+    lancia: "Lancia il dado",
+    dadoPescato: "🎲 Dado pescato. Ora lancia.",
+    alertPescaPrima: "Prima pesca un dado",
+    cercaTitolo: "🔍 Cerca una combinazione",
+    cercaBtn: "Cerca combinazione",
+    scegliSimbolo: "— scegli il simbolo —",
+    scegliArcano: "— scegli l’arcano —",
+    errore: "Scegli simbolo e arcano."
+  },
+  en: {
+    subtitle: "Bring attention to your heart, breathe, roll when you feel calm.",
+    pesca: "Draw a die",
+    lancia: "Roll the die",
+    dadoPescato: "🎲 Die selected. Now roll.",
+    alertPescaPrima: "Draw a die first",
+    cercaTitolo: "🔍 Search a combination",
+    cercaBtn: "Search combination",
+    scegliSimbolo: "— choose a symbol —",
+    scegliArcano: "— choose an arcana —",
+    errore: "Choose a symbol and an arcana."
+  }
+};
+
+function t(key){ return uiText[lingua][key]; }
+
+function aggiornaTesti(){
+  const sub = document.querySelector(".subtitle");
+  if(sub) sub.textContent = t("subtitle");
+
+  const bPesca = document.getElementById("pesca");
+  const bLancia = document.getElementById("lancia");
+  if(bPesca) bPesca.textContent = t("pesca");
+  if(bLancia) bLancia.textContent = t("lancia");
+
+  const h2 = document.querySelector("h2");
+  const bCerca = document.getElementById("cerca");
+  if(h2) h2.textContent = t("cercaTitolo");
+  if(bCerca) bCerca.textContent = t("cercaBtn");
+
+  const op1 = document.querySelector("#selectParola option[value='']");
+  const op2 = document.querySelector("#selectArcano option[value='']");
+  if(op1) op1.textContent = t("scegliSimbolo");
+  if(op2) op2.textContent = t("scegliArcano");
+}
+/* ===== PATCH END (pezzo 1) ===== *//* ===== PATCH START (pezzo 2) ===== */
+
+// 1) Arcani IT/EN + funzione che restituisce la lista giusta
+const arcaniIT = [
+  "0 - Il Matto","I - Il Mago","II - La Papessa","III - L’Imperatrice","IV - L’Imperatore","V - Il Papa",
+  "VI - Gli Amanti","VII - Il Carro","VIII - La Giustizia","IX - L’Eremita","X - La Ruota",
+  "XI - La Forza","XII - L’Appeso","XIII - La Morte","XIV - La Temperanza","XV - Il Diavolo",
+  "XVI - La Torre","XVII - La Stella","XVIII - La Luna","XIX - Il Sole","XX - Il Giudizio","XXI - Il Mondo"
+];
+
+const arcaniEN = [
+  "0 - The Fool","I - The Magician","II - The High Priestess","III - The Empress","IV - The Emperor","V - The Hierophant",
+  "VI - The Lovers","VII - The Chariot","VIII - Justice","IX - The Hermit","X - Wheel of Fortune",
+  "XI - Strength","XII - The Hanged Man","XIII - Death","XIV - Temperance","XV - The Devil",
+  "XVI - The Tower","XVII - The Star","XVIII - The Moon","XIX - The Sun","XX - Judgement","XXI - The World"
+];
+
+function getArcani(){
+  return lingua === "en" ? arcaniEN : arcaniIT;
+}
+
+// 2) Aggancia i bottoni lingua (se esistono)
+document.getElementById("langIT")?.addEventListener("click", () => {
+  lingua = "it";
+  aggiornaTesti();
+  aggiornaDropdownArcani(); // aggiorna la lista arcani nella ricerca
+});
+
+document.getElementById("langEN")?.addEventListener("click", () => {
+  lingua = "en";
+  aggiornaTesti();
+  aggiornaDropdownArcani();
+});
+
+// 3) Funzione per ripopolare il menu arcani nella sezione "Cerca"
+const selectArcano = document.getElementById("selectArcano");
+
+function aggiornaDropdownArcani(){
+  if(!selectArcano) return;
+
+  // salva la scelta attuale se c'è
+  const prev = selectArcano.value;
+
+  // cancella tutto
+  selectArcano.innerHTML = "";
+
+  // prima opzione vuota tradotta
+  const opt0 = document.createElement("option");
+  opt0.value = "";
+  opt0.textContent = t("scegliArcano");
+  selectArcano.appendChild(opt0);
+
+  // aggiungi lista giusta
+  getArcani().forEach(a => {
+    const opt = document.createElement("option");
+    opt.value = a;
+    opt.textContent = a;
+    selectArcano.appendChild(opt);
+  });
+
+  // prova a ripristinare se esiste ancora
+  if(prev) selectArcano.value = prev;
+}
+
+// 4) Primo refresh all’avvio
+aggiornaTesti();
+aggiornaDropdownArcani();
+
+/* ===== PATCH END (pezzo 2) ===== */
     let lingua = "it";
 
 const uiText = {
