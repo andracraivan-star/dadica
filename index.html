@@ -477,19 +477,25 @@ function popolaSelectSimboli(){
 }
 
 /* --- lingua buttons --- */
-document.getElementById("langIT")?.addEventListener("click", ()=>{
-  lingua = "it";
-  aggiornaTesti();
-  aggiornaDropdownArcani();
-  popolaSelectSimboli();
-});
-document.getElementById("langEN")?.addEventListener("click", ()=>{
-  lingua = "en";
-  aggiornaTesti();
-  aggiornaDropdownArcani();
-  popolaSelectSimboli();
-});
+const btnIT = document.getElementById("langIT");
+if (btnIT) {
+  btnIT.addEventListener("click", () => {
+    lingua = "it";
+    aggiornaTesti();
+    aggiornaDropdownArcani();
+    popolaSelectSimboli();
+  });
+}
 
+const btnEN = document.getElementById("langEN");
+if (btnEN) {
+  btnEN.addEventListener("click", () => {
+    lingua = "en";
+    aggiornaTesti();
+    aggiornaDropdownArcani();
+    popolaSelectSimboli();
+  });
+}
 /* --- pesca --- */
 document.getElementById("pesca").addEventListener("click", ()=>{
   dadoPescato = true;
