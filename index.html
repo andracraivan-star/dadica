@@ -244,6 +244,17 @@ function aggiornaDropdownArcani(){
 // 4) Primo refresh all’avvio
 aggiornaTesti();
 aggiornaDropdownArcani();
+// popola selectParola con tutti i simboli dei dadi
+selectParola.innerHTML = '<option value="">' + t("scegliSimbolo") + '</option>';
+
+[...new Set(
+  dadi.flat().map(f => f.simbolo)
+)].forEach(s => {
+  const o = document.createElement("option");
+  o.value = s;
+  o.textContent = s;
+  selectParola.appendChild(o);
+});
 
 
 
