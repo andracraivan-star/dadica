@@ -402,25 +402,19 @@ function mostra(html){
 }
 /* --- combina: qualunque simbolo + arcano --- */
 
-function combina(simbolo, arcanoLabel){
-  return `
-  <div style="font-size:22px; font-weight:700; line-height:1.3; margin-top:16px;">
-    Messaggio combinato:<br><br>
-    Il simbolo <b>${simbolo}</b> agisce <u>dentro</u> l’Arcano <b>${arcanoLabel}</b>.<br>
-    Chiediti: come questa chiave lavora in questo passaggio?
-  </div>
-  `;
-}
+function combina(simbolo, arcanoLabel, tipoFaccia){
+  const isEN = (lingua === "en");
+
   const tema = isEN
     ? (significatoArcaniEN[arcanoLabel] || "a central theme")
     : (significatoArcaniIT[arcanoLabel] || "un tema centrale");
 
   // Se è una parola chiave (OPEN/LINK/...) -> usa dizionario parole
-  const azione = (isEN ? significatoDadiEN[simbolo] : significatoDadiIT[simbolo]);
+  const azione = isEN ? significatoDadiEN[simbolo] : significatoDadiIT[simbolo];
   if(azione){
     return isEN
       ? `Keyword: <b>${simbolo}</b> → ${azione}<br><small>Mat / Arcana: ${arcanoLabel} → ${tema}</small>`
-      : `Parola chiave: <b>${simbolo}</b> → ${azione}<br><small>Tappeto / Arcano: ${arcanoLabel} → ${tema}</small>`;
+      : `Parola chiave: <b>${simbolo}</b> → ${azione}<br><small>Arcano (Tappeto): ${arcanoLabel} → ${tema}</small>`;
   }
 
   // Altrimenti: simbolo (runa/ebraico/pianeta/pentacolo/numero)
@@ -432,7 +426,7 @@ function combina(simbolo, arcanoLabel){
 
   return isEN
     ? `Symbol: <b>${simbolo}</b>${etichettaTipo} → ${sig}<br><small>Mat / Arcana: ${arcanoLabel} → ${tema}</small>`
-    : `Simbolo: <b>${simbolo}</b>${etichettaTipo} → ${sig}<br><small>Tappeto / Arcano: ${arcanoLabel} → ${tema}</small>`;
+    : `Simbolo: <b>${simbolo}</b>${etichettaTipo} → ${sig}<br><small>Arcano (Tappeto): ${arcanoLabel} → ${tema}</small>`;
 }
 
 /* --- dropdown arcani --- */
