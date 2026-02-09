@@ -627,30 +627,211 @@ function mostra(html){
 function combina(simbolo, arcanoLabel, tipoFaccia){
   const isEN = (lingua === "en");
 
+  // --- significato arcano ---
   const tema = isEN
     ? (significatoArcaniEN[arcanoLabel] || "a central theme")
     : (significatoArcaniIT[arcanoLabel] || "un tema centrale");
 
-  // Se è una parola chiave (OPEN/LINK/...) -> usa dizionario parole
+  // --- se è keyword (OPEN/LINK/...) usa azione, altrimenti sig simbolo ---
   const azione = isEN ? significatoDadiEN[simbolo] : significatoDadiIT[simbolo];
-  if(azione){
-    return isEN
-      ? `Keyword: <b>${simbolo}</b> → ${azione}<br><small>Mat / Arcana: ${arcanoLabel} → ${tema}</small>`
-      : `Parola chiave: <b>${simbolo}</b> → ${azione}<br><small>Arcano (Tappeto): ${arcanoLabel} → ${tema}</small>`;
+  const sig = azione
+    ? azione
+    : (isEN
+        ? (significatoSimboliEN[simbolo] || "activates a symbolic principle")
+        : (significatoSimboliIT[simbolo] || "attiva un principio simbolico"));
+
+  // --- categoria del simbolo (serve per cambiare stile messaggio) ---
+  let cat = "symbol";
+  if(azione) cat = "keyword";
+  else if(["☉","☾","☿","♀","♂","♃","♄","♅","♆","♇"].includes(simbolo)) cat = "planet";
+  else if(simbolo === "⛤") cat = "pentacle";
+  else if(/[א-ת]/.test(simbolo)) cat = "hebrew";
+  else if(/[ᚠ-ᛟ]/.test(simbolo)) cat = "rune";
+  else if(/^(0|I|II|III|IV|V|VI|VII|VIII|IX|X|XI|XII|XIII|XIV|XV|XVI|XVII|XVIII|XIX|XX|XXI)$/.test(simbolo)) cat = "roman";
+
+  // --- hash deterministico: ogni (simbolo+arcano) -> indice diverso ---
+  function hash(str){
+    let h = 0;
+    for(let i=0;i<str.length;i++) h = (h*31 + str.charCodeAt(i)) >>> 0;
+    return h;
   }
+  const seed = hash(simbolo + "|" + arcanoLabel + "|" + (cat||""));
+  const pick = (arr)=> arr[ seed % arr.length ];
 
-  // Altrimenti: simbolo (runa/ebraico/pianeta/pentacolo/numero)
-  const sig = isEN
-    ? (significatoSimboliEN[simbolo] || "activates a symbolic principle")
-    : (significatoSimboliIT[simbolo] || "attiva un principio simbolico");
+  // --- frasi diverse per categoria ---
+  const startIT = {
+    keyword: [
+      `Nel contesto di <b>${arcanoLabel}</b>, la chiave <b>${simbolo}</b> vuole muovere qualcosa.`,
+      `Sotto <b>${arcanoLabel}</b>, compare <b>${simbolo}</b>: un’azione da attivare.`,
+      `<b>${arcanoLabel}</b> fa da sfondo. <b>${simbolo}</b> è la leva del momento.`
+    ],
+    planet: [
+      `Qui <b>${arcanoLabel}</b> parla, e <b>${simbolo}</b> colora il tono dell’esperienza.`,
+      `Dentro <b>${arcanoLabel}</b>, l’energia di <b>${simbolo}</b> prende la guida.`,
+      `<b>${arcanoLabel}</b> apre lo scenario; <b>${simbolo}</b> decide “come”.`
+    ],
+    rune: [
+      `Con <b>${arcanoLabel}</b> come cornice, la runa <b>${simbolo}</b> indica la direzione.`,
+      `Sotto <b>${arcanoLabel}</b>, <b>${simbolo}</b> porta un segnale antico e preciso.`,
+      `<b>${arcanoLabel}</b> è il passaggio; <b>${simbolo}</b> è il messaggio-soglia.`
+    ],
+    hebrew: [
+      `Nel campo di <b>${arcanoLabel}</b>, la lettera <b>${simbolo}</b> accende una chiave interiore.`,
+      `Sotto <b>${arcanoLabel}</b>, <b>${simbolo}</b> suggerisce un varco da nominare.`,
+      `<b>${arcanoLabel}</b> definisce il contesto; <b>${simbolo}</b> indica un “seme”.`
+    ],
+    pentacle: [
+      `Con <b>${arcanoLabel}</b> come tema, <b>${simbolo}</b> richiama corpo, materia, confini.`,
+      `Sotto <b>${arcanoLabel}</b>, <b>${simbolo}</b> chiede radicamento e realtà.`,
+      `<b>${arcanoLabel}</b> attiva il quadro; <b>${simbolo}</b> domanda stabilità.`
+    ],
+    roman: [
+      `Nel contesto di <b>${arcanoLabel}</b>, <b>${simbolo}</b> parla di ciclo e posizione.`,
+      `Sotto <b>${arcanoLabel}</b>, <b>${simbolo}</b> indica il punto della sequenza.`,
+      `<b>${arcanoLabel}</b> fa da scenario; <b>${simbolo}</b> segnala “a che numero sei”.`
+    ],
+    symbol: [
+      `Nel contesto di <b>${arcanoLabel}</b>, il simbolo <b>${simbolo}</b> cambia l’angolo di lettura.`,
+      `<b>${arcanoLabel}</b> definisce lo scenario; <b>${simbolo}</b> mostra la sfumatura.`,
+      `Sotto <b>${arcanoLabel}</b>, <b>${simbolo}</b> evidenzia cosa si muove ora.`
+    ]
+  };
 
-  const etichettaTipo = tipoFaccia ? ` (${tipoFaccia})` : "";
+  const qIT = {
+    keyword: [
+      `Quale gesto concreto può incarnare questa chiave oggi?`,
+      `Dove stai trattenendo l’azione che chiede di partire?`,
+      `Che cosa cambia se fai un passo “piccolo ma vero” adesso?`
+    ],
+    planet: [
+      `Che parte di te vuole guidare: mente, cuore o volontà?`,
+      `Dove senti l’energia salire… e dove la disperdi?`,
+      `Quale decisione rende questo arcano più vivibile?`
+    ],
+    rune: [
+      `Qual è la direzione più semplice (non la più drammatica)?`,
+      `Che segnale stai ignorando da giorni?`,
+      `Se fosse un “sì/no”, cosa direbbe questa runa?`
+    ],
+    hebrew: [
+      `Che parola ti manca per dire la verità di questo momento?`,
+      `Quale porta si apre se nomini ciò che senti?`,
+      `Cosa stai iniziando a “scrivere” dentro di te?`
+    ],
+    pentacle: [
+      `Cosa va protetto e cosa va tagliato via dal campo?`,
+      `Quale confine ti fa respirare meglio?`,
+      `Dove serve radicamento prima di interpretare?`
+    ],
+    roman: [
+      `A che punto del ciclo sei: inizio, mezzo o chiusura?`,
+      `Qual è la prossima tappa naturale (non forzata)?`,
+      `Cosa succede se accetti il numero come “fase”?`
+    ],
+    symbol: [
+      `Quale dettaglio cambia se guardi da questa lente?`,
+      `Dove questa energia ti sta già parlando nel corpo?`,
+      `Che cosa diventa evidente se smetti di resistere?`
+    ]
+  };
 
-  return isEN
-    ? `Symbol: <b>${simbolo}</b>${etichettaTipo} → ${sig}<br><small>Mat / Arcana: ${arcanoLabel} → ${tema}</small>`
-    : `Simbolo: <b>${simbolo}</b>${etichettaTipo} → ${sig}<br><small>Arcano (Tappeto): ${arcanoLabel} → ${tema}</small>`;
+  // EN
+  const startEN = {
+    keyword: [
+      `With <b>${arcanoLabel}</b> as context, the key <b>${simbolo}</b> wants to move something.`,
+      `Under <b>${arcanoLabel}</b>, <b>${simbolo}</b> shows an action to activate.`,
+      `<b>${arcanoLabel}</b> sets the scene; <b>${simbolo}</b> is today’s lever.`
+    ],
+    planet: [
+      `Here <b>${arcanoLabel}</b> speaks, and <b>${simbolo}</b> colors the tone of the experience.`,
+      `Inside <b>${arcanoLabel}</b>, the energy of <b>${simbolo}</b> takes the lead.`,
+      `<b>${arcanoLabel}</b> opens the scenario; <b>${simbolo}</b> decides “how”.`
+    ],
+    rune: [
+      `With <b>${arcanoLabel}</b> as frame, the rune <b>${simbolo}</b> points the direction.`,
+      `Under <b>${arcanoLabel}</b>, <b>${simbolo}</b> brings an ancient, precise signal.`,
+      `<b>${arcanoLabel}</b> is the passage; <b>${simbolo}</b> is the threshold-message.`
+    ],
+    hebrew: [
+      `In the field of <b>${arcanoLabel}</b>, the letter <b>${simbolo}</b> lights an inner key.`,
+      `Under <b>${arcanoLabel}</b>, <b>${simbolo}</b> suggests a doorway to name.`,
+      `<b>${arcanoLabel}</b> sets context; <b>${simbolo}</b> points to a “seed”.`
+    ],
+    pentacle: [
+      `With <b>${arcanoLabel}</b> as theme, <b>${simbolo}</b> calls body, matter, boundaries.`,
+      `Under <b>${arcanoLabel}</b>, <b>${simbolo}</b> asks for grounding and reality.`,
+      `<b>${arcanoLabel}</b> activates the frame; <b>${simbolo}</b> asks for stability.`
+    ],
+    roman: [
+      `Within <b>${arcanoLabel}</b>, <b>${simbolo}</b> speaks of cycle and position.`,
+      `Under <b>${arcanoLabel}</b>, <b>${simbolo}</b> shows your place in the sequence.`,
+      `<b>${arcanoLabel}</b> is the scene; <b>${simbolo}</b> marks the phase.`
+    ],
+    symbol: [
+      `Within <b>${arcanoLabel}</b>, the symbol <b>${simbolo}</b> shifts the reading angle.`,
+      `<b>${arcanoLabel}</b> sets the scene; <b>${simbolo}</b> shows the nuance.`,
+      `Under <b>${arcanoLabel}</b>, <b>${simbolo}</b> highlights what moves now.`
+    ]
+  };
+
+  const qEN = {
+    keyword: [
+      `What concrete gesture can embody this key today?`,
+      `Where are you holding back the action that wants to start?`,
+      `What changes if you take a “small but true” step now?`
+    ],
+    planet: [
+      `Which part of you wants to lead: mind, heart, or will?`,
+      `Where do you feel energy rising… and where do you leak it?`,
+      `Which decision makes this arcana more livable?`
+    ],
+    rune: [
+      `What is the simplest direction (not the most dramatic)?`,
+      `What signal have you been ignoring for days?`,
+      `If it were a yes/no, what would this rune say?`
+    ],
+    hebrew: [
+      `What word is missing to tell the truth of this moment?`,
+      `Which door opens when you name what you feel?`,
+      `What are you beginning to “write” inside yourself?`
+    ],
+    pentacle: [
+      `What must be protected, and what must be cut from the field?`,
+      `Which boundary helps you breathe better?`,
+      `Where do you need grounding before interpretation?`
+    ],
+    roman: [
+      `Which phase are you in: beginning, middle, or closure?`,
+      `What is the next natural step (not forced)?`,
+      `What happens if you accept the number as a “phase”?`
+    ],
+    symbol: [
+      `What detail changes if you look through this lens?`,
+      `Where is this energy already speaking in your body?`,
+      `What becomes obvious when you stop resisting?`
+    ]
+  };
+
+  const intro = isEN ? pick(startEN[cat] || startEN.symbol) : pick(startIT[cat] || startIT.symbol);
+  const question = isEN ? pick(qEN[cat] || qEN.symbol) : pick(qIT[cat] || qIT.symbol);
+
+  const tipoTxt = tipoFaccia ? ` <span style="opacity:.7;">(${tipoFaccia})</span>` : "";
+
+  return `
+    <div style="font-size:20px; line-height:1.4;">
+      <b>${isEN ? "Message" : "Messaggio"}</b><br><br>
+      ${intro}<br>
+      <span style="opacity:.9;">${isEN ? "Question:" : "Domanda:"} <i>${question}</i></span>
+
+      <hr style="margin:14px 0; opacity:.35;">
+
+      <div style="font-size:15px; opacity:.85;">
+        <b>${isEN ? "Arcana meaning" : "Significato Arcano"}:</b><br>${tema}<br><br>
+        <b>${isEN ? "Symbol meaning" : "Significato Simbolo"}${tipoTxt}:</b><br>${sig}
+      </div>
+    </div>
+  `;
 }
-
 /* --- dropdown arcani --- */
 function aggiornaDropdownArcani(){
   const selectArcano = document.getElementById("selectArcano");
