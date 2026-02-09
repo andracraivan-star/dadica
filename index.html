@@ -78,12 +78,223 @@
   
     <script>
 const dadi = [
+  // DADO 0
   [
     { simbolo: "0", archetipo: "Numero 0" },
     { simbolo: "ᚠ", archetipo: "Runa - Fehu" },
     { simbolo: "א", archetipo: "Lettera ebraica - Aleph" },
     { simbolo: "☉", archetipo: "Sole" },
     { simbolo: "OPEN", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO I
+  [
+    { simbolo: "I", archetipo: "Numero I" },
+    { simbolo: "ᚢ", archetipo: "Runa - Uruz" },
+    { simbolo: "ב", archetipo: "Lettera ebraica - Bet" },
+    { simbolo: "☿", archetipo: "Mercurio" },
+    { simbolo: "LINK", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO II
+  [
+    { simbolo: "II", archetipo: "Numero II" },
+    { simbolo: "ᛈ", archetipo: "Runa - Perthro" },
+    { simbolo: "ג", archetipo: "Lettera ebraica - Gimel" },
+    { simbolo: "☾", archetipo: "Luna" },
+    { simbolo: "HOLD", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO III
+  [
+    { simbolo: "III", archetipo: "Numero III" },
+    { simbolo: "ᚦ", archetipo: "Runa - Thurisaz" },
+    { simbolo: "ד", archetipo: "Lettera ebraica - Dalet" },
+    { simbolo: "♀", archetipo: "Venere" },
+    { simbolo: "NURSE", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO IV
+  [
+    { simbolo: "IV", archetipo: "Numero IV" },
+    { simbolo: "ᚱ", archetipo: "Runa - Raidho" },
+    { simbolo: "ה", archetipo: "Lettera ebraica - He" },
+    { simbolo: "♂", archetipo: "Marte" },
+    { simbolo: "ORDER", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO V
+  [
+    { simbolo: "V", archetipo: "Numero V" },
+    { simbolo: "ᚲ", archetipo: "Runa - Kenaz" },
+    { simbolo: "ו", archetipo: "Lettera ebraica - Vav" },
+    { simbolo: "♃", archetipo: "Giove" },
+    { simbolo: "GUIDE", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO VI
+  [
+    { simbolo: "VI", archetipo: "Numero VI" },
+    { simbolo: "ᚷ", archetipo: "Runa - Gebo" },
+    { simbolo: "ז", archetipo: "Lettera ebraica - Zayin" },
+    { simbolo: "♀", archetipo: "Venere" },
+    { simbolo: "CHOOSE", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO VII
+  [
+    { simbolo: "VII", archetipo: "Numero VII" },
+    { simbolo: "ᚹ", archetipo: "Runa - Wunjo" },
+    { simbolo: "ח", archetipo: "Lettera ebraica - Chet" },
+    { simbolo: "♂", archetipo: "Marte" },
+    { simbolo: "MOVE", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO VIII
+  [
+    { simbolo: "VIII", archetipo: "Numero VIII" },
+    { simbolo: "ᚺ", archetipo: "Runa - Hagalaz" },
+    { simbolo: "ט", archetipo: "Lettera ebraica - Tet" },
+    { simbolo: "♄", archetipo: "Saturno" },
+    { simbolo: "ALIGN", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO IX
+  [
+    { simbolo: "IX", archetipo: "Numero IX" },
+    { simbolo: "ᚾ", archetipo: "Runa - Nauthiz" },
+    { simbolo: "י", archetipo: "Lettera ebraica - Yod" },
+    { simbolo: "☿", archetipo: "Mercurio" },
+    { simbolo: "RETREAT", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO X
+  [
+    { simbolo: "X", archetipo: "Numero X" },
+    { simbolo: "ᛁ", archetipo: "Runa - Isa" },
+    { simbolo: "כ", archetipo: "Lettera ebraica - Kaf" },
+    { simbolo: "♃", archetipo: "Giove" },
+    { simbolo: "TURN", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XI
+  [
+    { simbolo: "XI", archetipo: "Numero XI" },
+    { simbolo: "ᛃ", archetipo: "Runa - Jera" },
+    { simbolo: "ל", archetipo: "Lettera ebraica - Lamed" },
+    { simbolo: "☉", archetipo: "Sole" },
+    { simbolo: "TAME", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XII
+  [
+    { simbolo: "XII", archetipo: "Numero XII" },
+    { simbolo: "ᛇ", archetipo: "Runa - Eihwaz" },
+    { simbolo: "מ", archetipo: "Lettera ebraica - Mem" },
+    { simbolo: "♆", archetipo: "Nettuno" },
+    { simbolo: "PAUSE", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XIII
+  [
+    { simbolo: "XIII", archetipo: "Numero XIII" },
+    { simbolo: "ᛈ", archetipo: "Runa - Perthro" },
+    { simbolo: "נ", archetipo: "Lettera ebraica - Nun" },
+    { simbolo: "♇", archetipo: "Plutone" },
+    { simbolo: "END", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XIV
+  [
+    { simbolo: "XIV", archetipo: "Numero XIV" },
+    { simbolo: "ᛉ", archetipo: "Runa - Algiz" },
+    { simbolo: "ס", archetipo: "Lettera ebraica - Samekh" },
+    { simbolo: "☿", archetipo: "Mercurio" },
+    { simbolo: "MIX", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XV
+  [
+    { simbolo: "XV", archetipo: "Numero XV" },
+    { simbolo: "ᛋ", archetipo: "Runa - Sowilo" },
+    { simbolo: "ע", archetipo: "Lettera ebraica - Ayin" },
+    { simbolo: "♄", archetipo: "Saturno" },
+    { simbolo: "BIND", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XVI
+  [
+    { simbolo: "XVI", archetipo: "Numero XVI" },
+    { simbolo: "ᛏ", archetipo: "Runa - Tiwaz" },
+    { simbolo: "פ", archetipo: "Lettera ebraica - Pe" },
+    { simbolo: "♅", archetipo: "Urano" },
+    { simbolo: "BREAK", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XVII
+  [
+    { simbolo: "XVII", archetipo: "Numero XVII" },
+    { simbolo: "ᛒ", archetipo: "Runa - Berkana" },
+    { simbolo: "צ", archetipo: "Lettera ebraica - Tsadi" },
+    { simbolo: "♃", archetipo: "Giove" },
+    { simbolo: "HOPE", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XVIII
+  [
+    { simbolo: "XVIII", archetipo: "Numero XVIII" },
+    { simbolo: "ᛖ", archetipo: "Runa - Ehwaz" },
+    { simbolo: "ק", archetipo: "Lettera ebraica - Qof" },
+    { simbolo: "☾", archetipo: "Luna" },
+    { simbolo: "DREAM", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XIX
+  [
+    { simbolo: "XIX", archetipo: "Numero XIX" },
+    { simbolo: "ᛗ", archetipo: "Runa - Mannaz" },
+    { simbolo: "ר", archetipo: "Lettera ebraica - Resh" },
+    { simbolo: "☉", archetipo: "Sole" },
+    { simbolo: "SHINE", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XX
+  [
+    { simbolo: "XX", archetipo: "Numero XX" },
+    { simbolo: "ᛚ", archetipo: "Runa - Laguz" },
+    { simbolo: "ש", archetipo: "Lettera ebraica - Shin" },
+    { simbolo: "♆", archetipo: "Nettuno" },
+    { simbolo: "CALL", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XXI
+  [
+    { simbolo: "XXI", archetipo: "Numero XXI" },
+    { simbolo: "ᛜ", archetipo: "Runa - Ingwaz" },
+    { simbolo: "ת", archetipo: "Lettera ebraica - Tav" },
+    { simbolo: "♄", archetipo: "Saturno" },
+    { simbolo: "WHOLE", archetipo: "Parola chiave" },
     { simbolo: "⛤", archetipo: "Pentacolo" }
   ]
 ];
