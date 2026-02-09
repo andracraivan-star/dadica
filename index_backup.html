@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DADICA</title>
+  <style>
+    body{
+      margin:0; min-height:100vh; display:flex; flex-direction:column;
+      justify-content:center; align-items:center; text-align:center;
+      padding:24px; box-sizing:border-box;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: linear-gradient(180deg,#eaf4ff,#cfe9ff,#b7ddff);
+    }
+    h1{ font-size:72px; margin:0 0 12px; letter-spacing:1px; }
+    .subtitle{ font-size:22px; margin:0 0 18px; opacity:.8; }
+    button{
+      font-size:20px; padding:14px 18px; border-radius:14px; margin:6px;
+      border:2px solid #333; background:#eee;
+    }
+    #risultato{
+      margin-top:18px; font-size:26px; min-height:120px;
+      width:100%; max-width:700px;
+    }
+    details{ margin-top:18px; max-width:700px; width:100%; font-size:18px; line-height:1.4; }
+    summary{ cursor:pointer; font-weight:700; }
+    .sfera{
+      width:120px; height:120px; margin:22px auto 10px; border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), rgba(170,200,240,.9) 35%, rgba(80,120,180,.9) 70%);
+      box-shadow: 0 18px 35px rgba(0,0,0,0.18), inset 0 0 0 2px rgba(255,255,255,0.35);
+      opacity:.75;
+    }
+    select{ font-size:18px; padding:10px; margin:6px; }
+    hr{ margin:32px 0; width:100%; max-width:700px; }
+  </style>
+</head>
+
+<body>
+  <div style="margin-bottom:16px;">
+    <button id="langIT">🇮🇹 IT</button>
+    <button id="langEN">🇬🇧 EN</button>
+  </div>
+
+  <h1>DADICA 🎲</h1>
+  <p class="subtitle">Porta l’attenzione al cuore, respira, lancia quando ti senti in pace.</p>
+  <div class="sfera"></div>
+  <p style="font-size:14px; opacity:.6; margin-top:-10px;">✦</p>
+
+  <div>
+    <button id="pesca">Pesca un dado</button>
+    <button id="lancia">Lancia il dado</button>
+  </div>
+
+  <div id="risultato"></div>
+
+  <hr>
+
+  <h2 style="font-size:26px;">🔍 Cerca una combinazione</h2>
+
+  <select id="selectParola">
+    <option value="">— scegli il simbolo —</option>
+  </select>
+
+  <select id="selectArcano">
+    <option value="">— scegli l’arcano —</option>
+  </select>
+
+  <br>
+  <button id="cerca">Cerca combinazione</button>
+  <div id="risultatoCerca" style="margin-top:14px; max-width:700px; width:100%;"></div>
+
+  <details>
+  <summary>Cos’è Dadica / What is Dadica</summary>
+
+  <p class="it">
+    Dadica è un sistema di autoconoscenza.
+    Attraverso dadi e archetipi, rivela quale energia guida o blocca i tuoi passi
+    in un preciso istante e quale esperienza sei chiamata a vivere.
+  </p>
+
+  <p class="en" style="display:none;">
+    Dadica is a self-knowledge system.
+    Through dice and archetypes, it reveals which energy guides or blocks your steps
+    in a specific moment and what experience you are invited to explore.
+  </p>
+</details>
+
+
+
+    <script>
+const dadi = [
+  // DADO 0
+  [
+    { simbolo: "0", archetipo: "Numero 0" },
+    { simbolo: "ᚠ", archetipo: "Runa - Fehu" },
+    { simbolo: "א", archetipo: "Lettera ebraica - Aleph" },
+    { simbolo: "☉", archetipo: "Sole" },
+    { simbolo: "OPEN", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO I
+  [
+    { simbolo: "I", archetipo: "Numero I" },
+    { simbolo: "ᚢ", archetipo: "Runa - Uruz" },
+    { simbolo: "ב", archetipo: "Lettera ebraica - Bet" },
+    { simbolo: "☿", archetipo: "Mercurio" },
+    { simbolo: "LINK", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO II
+  [
+    { simbolo: "II", archetipo: "Numero II" },
+    { simbolo: "ᛈ", archetipo: "Runa - Perthro" },
+    { simbolo: "ג", archetipo: "Lettera ebraica - Gimel" },
+    { simbolo: "☾", archetipo: "Luna" },
+    { simbolo: "HOLD", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO III
+  [
+    { simbolo: "III", archetipo: "Numero III" },
+    { simbolo: "ᚦ", archetipo: "Runa - Thurisaz" },
+    { simbolo: "ד", archetipo: "Lettera ebraica - Dalet" },
+    { simbolo: "♀", archetipo: "Venere" },
+    { simbolo: "NURSE", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO IV
+  [
+    { simbolo: "IV", archetipo: "Numero IV" },
+    { simbolo: "ᚱ", archetipo: "Runa - Raidho" },
+    { simbolo: "ה", archetipo: "Lettera ebraica - He" },
+    { simbolo: "♂", archetipo: "Marte" },
+    { simbolo: "ORDER", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO V
+  [
+    { simbolo: "V", archetipo: "Numero V" },
+    { simbolo: "ᚲ", archetipo: "Runa - Kenaz" },
+    { simbolo: "ו", archetipo: "Lettera ebraica - Vav" },
+    { simbolo: "♃", archetipo: "Giove" },
+    { simbolo: "GUIDE", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO VI
+  [
+    { simbolo: "VI", archetipo: "Numero VI" },
+    { simbolo: "ᚷ", archetipo: "Runa - Gebo" },
+    { simbolo: "ז", archetipo: "Lettera ebraica - Zayin" },
+    { simbolo: "♀", archetipo: "Venere" },
+    { simbolo: "CHOOSE", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO VII
+  [
+    { simbolo: "VII", archetipo: "Numero VII" },
+    { simbolo: "ᚹ", archetipo: "Runa - Wunjo" },
+    { simbolo: "ח", archetipo: "Lettera ebraica - Chet" },
+    { simbolo: "♂", archetipo: "Marte" },
+    { simbolo: "MOVE", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO VIII
+  [
+    { simbolo: "VIII", archetipo: "Numero VIII" },
+    { simbolo: "ᚺ", archetipo: "Runa - Hagalaz" },
+    { simbolo: "ט", archetipo: "Lettera ebraica - Tet" },
+    { simbolo: "♄", archetipo: "Saturno" },
+    { simbolo: "ALIGN", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO IX
+  [
+    { simbolo: "IX", archetipo: "Numero IX" },
+    { simbolo: "ᚾ", archetipo: "Runa - Nauthiz" },
+    { simbolo: "י", archetipo: "Lettera ebraica - Yod" },
+    { simbolo: "☿", archetipo: "Mercurio" },
+    { simbolo: "RETREAT", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO X
+  [
+    { simbolo: "X", archetipo: "Numero X" },
+    { simbolo: "ᛁ", archetipo: "Runa - Isa" },
+    { simbolo: "כ", archetipo: "Lettera ebraica - Kaf" },
+    { simbolo: "♃", archetipo: "Giove" },
+    { simbolo: "TURN", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XI
+  [
+    { simbolo: "XI", archetipo: "Numero XI" },
+    { simbolo: "ᛃ", archetipo: "Runa - Jera" },
+    { simbolo: "ל", archetipo: "Lettera ebraica - Lamed" },
+    { simbolo: "☉", archetipo: "Sole" },
+    { simbolo: "TAME", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XII
+  [
+    { simbolo: "XII", archetipo: "Numero XII" },
+    { simbolo: "ᛇ", archetipo: "Runa - Eihwaz" },
+    { simbolo: "מ", archetipo: "Lettera ebraica - Mem" },
+    { simbolo: "♆", archetipo: "Nettuno" },
+    { simbolo: "PAUSE", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XIII
+  [
+    { simbolo: "XIII", archetipo: "Numero XIII" },
+    { simbolo: "ᛈ", archetipo: "Runa - Perthro" },
+    { simbolo: "נ", archetipo: "Lettera ebraica - Nun" },
+    { simbolo: "♇", archetipo: "Plutone" },
+    { simbolo: "END", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XIV
+  [
+    { simbolo: "XIV", archetipo: "Numero XIV" },
+    { simbolo: "ᛉ", archetipo: "Runa - Algiz" },
+    { simbolo: "ס", archetipo: "Lettera ebraica - Samekh" },
+    { simbolo: "☿", archetipo: "Mercurio" },
+    { simbolo: "MIX", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XV
+  [
+    { simbolo: "XV", archetipo: "Numero XV" },
+    { simbolo: "ᛋ", archetipo: "Runa - Sowilo" },
+    { simbolo: "ע", archetipo: "Lettera ebraica - Ayin" },
+    { simbolo: "♄", archetipo: "Saturno" },
+    { simbolo: "BIND", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XVI
+  [
+    { simbolo: "XVI", archetipo: "Numero XVI" },
+    { simbolo: "ᛏ", archetipo: "Runa - Tiwaz" },
+    { simbolo: "פ", archetipo: "Lettera ebraica - Pe" },
+    { simbolo: "♅", archetipo: "Urano" },
+    { simbolo: "BREAK", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XVII
+  [
+    { simbolo: "XVII", archetipo: "Numero XVII" },
+    { simbolo: "ᛒ", archetipo: "Runa - Berkana" },
+    { simbolo: "צ", archetipo: "Lettera ebraica - Tsadi" },
+    { simbolo: "♃", archetipo: "Giove" },
+    { simbolo: "HOPE", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XVIII
+  [
+    { simbolo: "XVIII", archetipo: "Numero XVIII" },
+    { simbolo: "ᛖ", archetipo: "Runa - Ehwaz" },
+    { simbolo: "ק", archetipo: "Lettera ebraica - Qof" },
+    { simbolo: "☾", archetipo: "Luna" },
+    { simbolo: "DREAM", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XIX
+  [
+    { simbolo: "XIX", archetipo: "Numero XIX" },
+    { simbolo: "ᛗ", archetipo: "Runa - Mannaz" },
+    { simbolo: "ר", archetipo: "Lettera ebraica - Resh" },
+    { simbolo: "☉", archetipo: "Sole" },
+    { simbolo: "SHINE", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XX
+  [
+    { simbolo: "XX", archetipo: "Numero XX" },
+    { simbolo: "ᛚ", archetipo: "Runa - Laguz" },
+    { simbolo: "ש", archetipo: "Lettera ebraica - Shin" },
+    { simbolo: "♆", archetipo: "Nettuno" },
+    { simbolo: "CALL", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ],
+
+  // DADO XXI
+  [
+    { simbolo: "XXI", archetipo: "Numero XXI" },
+    { simbolo: "ᛜ", archetipo: "Runa - Ingwaz" },
+    { simbolo: "ת", archetipo: "Lettera ebraica - Tav" },
+    { simbolo: "♄", archetipo: "Saturno" },
+    { simbolo: "WHOLE", archetipo: "Parola chiave" },
+    { simbolo: "⛤", archetipo: "Pentacolo" }
+  ]
+];
+/* =========================
+   DADICA - LOGICA COMPLETA
+   Simbolo (qualsiasi faccia) + Arcano (Tappeto)
+   IT/EN + Cerca combinazione reale
+========================= */
+
+let lingua = "it";
+const selectParola = document.getElementById("selectParola");
+const selectArcano = document.getElementById("selectArcano");
+const risultatoCerca = document.getElementById("risultatoCerca");
+
+/* --- UI testi --- */
+const uiText = {
+  it: {
+    subtitle: "Porta l’attenzione al cuore, respira, lancia quando ti senti in pace.",
+    pesca: "Pesca un dado",
+    lancia: "Lancia il dado",
+    cercaTitolo: "🔍 Cerca una combinazione (Tappeto)",
+    cercaBtn: "Cerca combinazione",
+    scegliSimbolo: "— scegli il simbolo —",
+    scegliArcano: "— scegli l’arcano (Tappeto) —",
+    primaPesca: "Prima pesca un dado.",
+    pescato: "🎲 Dado pescato. Ora lancia.",
+    errore: "Scegli simbolo e arcano."
+  },
+  en: {
+    subtitle: "Bring attention to your heart, breathe, roll when you feel calm.",
+    pesca: "Draw a die",
+    lancia: "Roll the die",
+    cercaTitolo: "🔍 Search a combination (Mat)",
+    cercaBtn: "Search combination",
+    scegliSimbolo: "— choose a symbol —",
+    scegliArcano: "— choose an arcana (Mat) —",
+    primaPesca: "Draw a die first.",
+    pescato: "🎲 Die drawn. Now roll.",
+    errore: "Choose a symbol and an arcana."
+  }
+};
+
+function t(key){
+  return uiText[lingua][key] || key;
+}
+
+function aggiornaTesti(){
+  document.querySelector(".subtitle").textContent = t("subtitle");
+  document.getElementById("pesca").textContent = t("pesca");
+  document.getElementById("lancia").textContent = t("lancia");
+  document.querySelector("h2").textContent = t("cercaTitolo");
+  document.getElementById("cerca").textContent = t("cercaBtn");
+
+  const optS = document.querySelector("#selectParola option[value='']");
+  const optA = document.querySelector("#selectArcano option[value='']");
+  if(optS) optS.textContent = t("scegliSimbolo");
+  if(optA) optA.textContent = t("scegliArcano");
+}
+
+/* --- Arcani (etichette) --- */
+const arcaniIT = [
+  "0 - Il Matto","I - Il Mago","II - La Papessa","III - L’Imperatrice","IV - L’Imperatore","V - Il Papa",
+  "VI - Gli Amanti","VII - Il Carro","VIII - La Giustizia","IX - L’Eremita","X - La Ruota",
+  "XI - La Forza","XII - L’Appeso","XIII - La Morte","XIV - La Temperanza","XV - Il Diavolo",
+  "XVI - La Torre","XVII - La Stella","XVIII - La Luna","XIX - Il Sole","XX - Il Giudizio","XXI - Il Mondo"
+];
+
+const arcaniEN = [
+  "0 - The Fool","I - The Magician","II - The High Priestess","III - The Empress","IV - The Emperor","V - The Hierophant",
+  "VI - The Lovers","VII - The Chariot","VIII - Justice","IX - The Hermit","X - Wheel of Fortune",
+  "XI - Strength","XII - The Hanged Man","XIII - Death","XIV - Temperance","XV - The Devil",
+  "XVI - The Tower","XVII - The Star","XVIII - The Moon","XIX - The Sun","XX - Judgement","XXI - The World"
+];
+
+function getArcani(){
+  return lingua === "en" ? arcaniEN : arcaniIT;
+}
+
+/* --- Significati: Parole chiave (azioni) --- */
+const significatoDadiIT = {
+  OPEN:"apre, sblocca, rende possibile",
+  LINK:"connette, mette in relazione, crea un ponte",
+  HOLD:"trattiene, stabilizza, chiede pazienza",
+  NURSE:"cura, nutre, fa crescere con delicatezza",
+  ORDER:"mette ordine, definisce confini, disciplina",
+  GUIDE:"orienta, insegna, mostra la direzione",
+  CHOOSE:"porta a una scelta consapevole",
+  MOVE:"spinge all’azione, avvia un movimento",
+  ALIGN:"riallinea, riporta coerenza, aggiusta la rotta",
+  RETREAT:"ritira, protegge, invita al silenzio",
+  TURN:"fa girare la ruota, cambia fase, svolta",
+  TAME:"addomestica, canalizza, dà forma",
+  PAUSE:"sospende, fa decantare, ascolta",
+  END:"chiude, taglia, conclude",
+  MIX:"mescola, armonizza, integra",
+  BIND:"lega, vincola, attacca (con attenzione)",
+  BREAK:"rompe, libera, spezza una struttura",
+  HOPE:"ispira, rialza, riaccende fiducia",
+  DREAM:"porta sogno, intuizione, immagini",
+  SHINE:"illumina, chiarisce, mette in evidenza",
+  CALL:"chiama, risveglia, convoca",
+  WHOLE:"integra, completa, unifica"
+};
+
+const significatoDadiEN = {
+  OPEN:"opens, unlocks, makes possible",
+  LINK:"connects, creates a bridge",
+  HOLD:"stabilizes, asks for patience",
+  NURSE:"nurtures, heals, gently grows",
+  ORDER:"creates order, defines structure",
+  GUIDE:"guides, teaches, shows direction",
+  CHOOSE:"invites a conscious choice",
+  MOVE:"initiates action, movement",
+  ALIGN:"realigns, restores coherence",
+  RETREAT:"withdraws, protects, invites silence",
+  TURN:"turns the wheel, changes phase",
+  TAME:"channels, gives form",
+  PAUSE:"suspends, allows listening",
+  END:"closes, ends, cuts",
+  MIX:"blends, harmonizes",
+  BIND:"binds, attaches (be mindful)",
+  BREAK:"breaks, liberates",
+  HOPE:"inspires, restores faith",
+  DREAM:"brings dreams and intuition",
+  SHINE:"illuminates, reveals",
+  CALL:"calls, awakens",
+  WHOLE:"integrates, completes"
+};
+
+/* --- Significati: Arcani (tema del Tappeto) --- */
+const significatoArcaniIT = {
+  "0 - Il Matto":"inizio, salto nel vuoto, libertà",
+  "I - Il Mago":"volontà, risorse, manifestazione",
+  "II - La Papessa":"intuizione, mistero, interiorità",
+  "III - L’Imperatrice":"creatività, fertilità, abbondanza",
+  "IV - L’Imperatore":"struttura, autorità, confini",
+  "V - Il Papa":"valori, guida, tradizione",
+  "VI - Gli Amanti":"scelte, relazioni, allineamento del cuore",
+  "VII - Il Carro":"direzione, avanzamento, decisione",
+  "VIII - La Giustizia":"equilibrio, verità, conseguenze",
+  "IX - L’Eremita":"ritiro, ricerca, saggezza",
+  "X - La Ruota":"ciclo, cambiamento, svolta",
+  "XI - La Forza":"coraggio, controllo gentile, energia",
+  "XII - L’Appeso":"pausa, prospettiva nuova, resa",
+  "XIII - La Morte":"fine, trasformazione, taglio netto",
+  "XIV - La Temperanza":"armonia, integrazione, alchimia",
+  "XV - Il Diavolo":"desiderio, attaccamento, potere",
+  "XVI - La Torre":"crollo, verità che irrompe, liberazione",
+  "XVII - La Stella":"speranza, guarigione, fiducia",
+  "XVIII - La Luna":"inconscio, sogni, ambiguità",
+  "XIX - Il Sole":"chiarezza, vitalità, gioia",
+  "XX - Il Giudizio":"risveglio, chiamata, verità",
+  "XXI - Il Mondo":"compimento, integrazione, chiusura del ciclo"
+};
+
+const significatoArcaniEN = {
+  "0 - The Fool":"beginnings, leap of faith, freedom",
+  "I - The Magician":"will, tools, manifestation",
+  "II - The High Priestess":"intuition, mystery, inner knowing",
+  "III - The Empress":"creativity, fertility, abundance",
+  "IV - The Emperor":"structure, authority, boundaries",
+  "V - The Hierophant":"values, guidance, tradition",
+  "VI - The Lovers":"choices, relationships, heart alignment",
+  "VII - The Chariot":"direction, victory, determination",
+  "VIII - Justice":"balance, truth, consequences",
+  "IX - The Hermit":"retreat, search, wisdom",
+  "X - Wheel of Fortune":"cycle, change, turning point",
+  "XI - Strength":"courage, gentle control, vitality",
+  "XII - The Hanged Man":"pause, new perspective, surrender",
+  "XIII - Death":"ending, transformation, clean cut",
+  "XIV - Temperance":"harmony, integration, alchemy",
+  "XV - The Devil":"desire, attachment, power dynamics",
+  "XVI - The Tower":"collapse, truth breaking in, liberation",
+  "XVII - The Star":"hope, healing, trust",
+  "XVIII - The Moon":"subconscious, dreams, ambiguity",
+  "XIX - The Sun":"clarity, joy, life force",
+  "XX - Judgement":"awakening, call, truth",
+  "XXI - The World":"completion, integration, cycle fulfilled"
+};
+
+/* --- Significati: Simboli (rune/ebraico/pianeti/pentacolo/numeri) --- */
+const significatoSimboliIT = {
+  "☉":"Sole: identità, chiarezza, vitalità",
+  "☾":"Luna: emozioni, intuito, memoria",
+  "☿":"Mercurio: mente, messaggi, scambi",
+  "♀":"Venere: amore, armonia, piacere",
+  "♂":"Marte: azione, taglio, coraggio",
+  "♃":"Giove: espansione, fiducia, opportunità",
+  "♄":"Saturno: struttura, limiti, maturità",
+  "♅":"Urano: svolta, libertà, imprevisto",
+  "♆":"Nettuno: sogno, ispirazione, nebbia",
+  "♇":"Plutone: trasformazione, potere, rinascita",
+  "⛤":"Pentacolo: protezione, materia, radicamento",
+
+  "ᚠ":"Fehu: risorse, valore, energia in movimento",
+  "ᚢ":"Uruz: forza, corpo, potenza",
+  "ᚦ":"Thurisaz: soglia, difesa, impatto",
+  "ᚨ":"Ansuz: parola, segno, messaggio",
+  "ᚱ":"Raidho: percorso, viaggio, direzione",
+  "ᚲ":"Kenaz: fuoco, intuizione, rivelazione",
+  "ᚷ":"Gebo: dono, scambio, patto",
+  "ᚹ":"Wunjo: gioia, accordo, benessere",
+  "ᚺ":"Hagalaz: rottura necessaria, risveglio",
+  "ᚾ":"Nauthiz: bisogno, prova, disciplina",
+  "ᛁ":"Isa: stasi, ghiaccio, concentrazione",
+  "ᛃ":"Jera: raccolto, tempo giusto, cicli",
+  "ᛇ":"Eihwaz: asse, trasformazione, resistenza",
+  "ᛈ":"Perthro: mistero, sorte, segreti",
+  "ᛉ":"Algiz: protezione, guida, antenna",
+  "ᛋ":"Sowilo: successo, chiarezza, sole interiore",
+  "ᛏ":"Tiwaz: decisione, giustizia, direzione",
+  "ᛒ":"Berkana: nascita, cura, crescita",
+  "ᛖ":"Ehwaz: alleanza, movimento, fiducia",
+  "ᛗ":"Mannaz: umano, mente, cooperazione",
+  "ᛚ":"Laguz: flusso, intuizione, acqua",
+  "ᛜ":"Ingwaz: seme, compimento, gestazione",
+
+  "א":"Aleph: inizio, respiro, potenziale",
+  "ב":"Bet: casa, contenitore, dimora",
+  "ג":"Gimel: passaggio, movimento, ponte",
+  "ד":"Dalet: porta, scelta, accesso",
+  "ה":"He: rivelazione, apertura, spiraglio",
+  "ו":"Vav: unione, gancio, collegamento",
+  "ז":"Zayin: taglio, discernimento, direzione",
+  "ח":"Chet: confine sacro, soglia, spazio",
+  "ט":"Tet: grembo, protezione, gestazione",
+  "כ":"Kaf: mano, forma, capacità",
+  "י":"Yod: scintilla, seme, intenzione",
+  "ל":"Lamed: apprendimento, guida, slancio",
+  "מ":"Mem: acqua, profondità, inconscio",
+  "נ":"Nun: trasformazione, caduta e risalita",
+  "ס":"Samekh: sostegno, cerchio, protezione",
+  "ע":"Ayin: occhio, visione, consapevolezza",
+  "פ":"Pe: bocca, parola, espressione",
+  "צ":"Tsadi: integrità, giustizia, radice",
+  "ק":"Qof: ombra, verità interna, risveglio",
+  "ר":"Resh: testa, inizio, rinnovamento",
+  "ש":"Shin: fuoco, spirito, trasformazione",
+  "ת":"Tav: sigillo, compimento, destino"
+};
+
+const significatoSimboliEN = {
+  "☉":"Sun: identity, clarity, vitality",
+  "☾":"Moon: emotions, intuition, memory",
+  "☿":"Mercury: mind, messages, exchange",
+  "♀":"Venus: love, harmony, pleasure",
+  "♂":"Mars: action, courage, cutting through",
+  "♃":"Jupiter: expansion, trust, opportunity",
+  "♄":"Saturn: structure, limits, maturity",
+  "♅":"Uranus: breakthrough, freedom, surprise",
+  "♆":"Neptune: dream, inspiration, fog",
+  "♇":"Pluto: transformation, power, rebirth",
+  "⛤":"Pentacle: protection, matter, grounding",
+
+  "ᚠ":"Fehu: resources, value, moving energy",
+  "ᚢ":"Uruz: strength, body, power",
+  "ᚦ":"Thurisaz: threshold, defense, impact",
+  "ᚨ":"Ansuz: word, sign, message",
+  "ᚱ":"Raidho: journey, path, direction",
+  "ᚲ":"Kenaz: fire, insight, revelation",
+  "ᚷ":"Gebo: gift, exchange, pact",
+  "ᚹ":"Wunjo: joy, harmony, wellbeing",
+  "ᚺ":"Hagalaz: necessary disruption, wake-up",
+  "ᚾ":"Nauthiz: need, trial, discipline",
+  "ᛁ":"Isa: stillness, focus, ice",
+  "ᛃ":"Jera: harvest, right timing, cycles",
+  "ᛇ":"Eihwaz: axis, endurance, transformation",
+  "ᛈ":"Perthro: mystery, fate, secrets",
+  "ᛉ":"Algiz: protection, guidance, antenna",
+  "ᛋ":"Sowilo: success, clarity, inner sun",
+  "ᛏ":"Tiwaz: decision, justice, direction",
+  "ᛒ":"Berkana: birth, care, growth",
+  "ᛖ":"Ehwaz: alliance, movement, trust",
+  "ᛗ":"Mannaz: human mind, cooperation",
+  "ᛚ":"Laguz: flow, intuition, water",
+  "ᛜ":"Ingwaz: seed, completion, gestation",
+
+  "א":"Aleph: beginning, breath, potential",
+  "ב":"Bet: house, container, home",
+  "ג":"Gimel: passage, movement, bridge",
+  "ד":"Dalet: door, choice, access",
+  "ה":"He: revelation, opening, window",
+  "ו":"Vav: union, hook, connection",
+  "ז":"Zayin: cut, discernment, direction",
+  "ח":"Chet: sacred boundary, threshold, space",
+  "ט":"Tet: womb, protection, gestation",
+  "כ":"Kaf: hand, form, capability",
+  "י":"Yod: spark, seed, intention",
+  "ל":"Lamed: learning, guidance, impulse",
+  "מ":"Mem: water, depth, subconscious",
+  "נ":"Nun: fall & rise, transformation",
+  "ס":"Samekh: support, circle, protection",
+  "ע":"Ayin: eye, vision, awareness",
+  "פ":"Pe: mouth, speech, expression",
+  "צ":"Tsadi: integrity, justice, root",
+  "ק":"Qof: shadow, inner truth, awakening",
+  "ר":"Resh: head, new start, renewal",
+  "ש":"Shin: fire, spirit, transformation",
+  "ת":"Tav: seal, completion, destiny"
+};
+
+/* =========================
+   ⚠️ DADI
+   Qui USA IL TUO const dadi = [...]
+   (22 dadi, 6 facce ciascuno)
+========================= */
+// Se hai già const dadi altrove, NON duplicare qui.
+ // const dadi = [...]; 
+
+/* --- stato pesca/lancio --- */
+let dadoPescato = false;
+let dadoIndex = null;
+
+function mostra(html){
+  document.getElementById("risultato").innerHTML = html;
+}
+/* --- combina: qualunque simbolo + arcano --- */
+
+function combina(simbolo, arcanoLabel, tipoFaccia){
+  const isEN = (lingua === "en");
+
+  const tema = isEN
+    ? (significatoArcaniEN[arcanoLabel] || "a central theme")
+    : (significatoArcaniIT[arcanoLabel] || "un tema centrale");
+
+  // Se è una parola chiave (OPEN/LINK/...) -> usa dizionario parole
+  const azione = isEN ? significatoDadiEN[simbolo] : significatoDadiIT[simbolo];
+  if(azione){
+    return isEN
+      ? `Keyword: <b>${simbolo}</b> → ${azione}<br><small>Mat / Arcana: ${arcanoLabel} → ${tema}</small>`
+      : `Parola chiave: <b>${simbolo}</b> → ${azione}<br><small>Arcano (Tappeto): ${arcanoLabel} → ${tema}</small>`;
+  }
+
+  // Altrimenti: simbolo (runa/ebraico/pianeta/pentacolo/numero)
+  const sig = isEN
+    ? (significatoSimboliEN[simbolo] || "activates a symbolic principle")
+    : (significatoSimboliIT[simbolo] || "attiva un principio simbolico");
+
+  const etichettaTipo = tipoFaccia ? ` (${tipoFaccia})` : "";
+
+  return isEN
+    ? `Symbol: <b>${simbolo}</b>${etichettaTipo} → ${sig}<br><small>Mat / Arcana: ${arcanoLabel} → ${tema}</small>`
+    : `Simbolo: <b>${simbolo}</b>${etichettaTipo} → ${sig}<br><small>Arcano (Tappeto): ${arcanoLabel} → ${tema}</small>`;
+}
+
+/* --- dropdown arcani --- */
+function aggiornaDropdownArcani(){
+  const selectArcano = document.getElementById("selectArcano");
+  if(!selectArcano) return;
+
+  const keepFirst = selectArcano.querySelector("option[value='']");
+  selectArcano.innerHTML = "";
+  const first = document.createElement("option");
+  first.value = "";
+  first.textContent = t("scegliArcano");
+  selectArcano.appendChild(first);
+
+  getArcani().forEach(a=>{
+    const opt = document.createElement("option");
+    opt.value = a;
+    opt.textContent = a;
+    selectArcano.appendChild(opt);
+  });
+}
+
+/* --- dropdown simboli: prende TUTTI i simboli dai dadi --- */
+function popolaSelectSimboli(){
+  const selectParola = document.getElementById("selectParola");
+  if(!selectParola) return;
+
+  selectParola.innerHTML = "";
+  const first = document.createElement("option");
+  first.value = "";
+  first.textContent = t("scegliSimbolo");
+  selectParola.appendChild(first);
+
+  // raccogli simboli unici
+  const set = new Set();
+  if(typeof dadi !== "undefined"){
+    dadi.forEach(d=> d.forEach(f=> set.add(f.simbolo)));
+  }
+
+  // ordina “carino”
+  const lista = Array.from(set).sort((a,b)=> (a>b?1:-1));
+  lista.forEach(s=>{
+    const opt = document.createElement("option");
+    opt.value = s;
+    opt.textContent = s;
+    selectParola.appendChild(opt);
+  });
+}
+
+/* --- lingua buttons --- */
+const btnIT = document.getElementById("langIT");
+if (btnIT) {
+  btnIT.addEventListener("click", () => {
+    lingua = "it";
+    aggiornaTesti();
+    aggiornaDropdownArcani();
+    popolaSelectSimboli();
+  });
+}
+
+const btnEN = document.getElementById("langEN");
+if (btnEN) {
+  btnEN.addEventListener("click", () => {
+    lingua = "en";
+    aggiornaTesti();
+    aggiornaDropdownArcani();
+    popolaSelectSimboli();
+  });
+}
+/* --- pesca --- */
+document.getElementById("pesca").addEventListener("click", ()=>{
+  dadoPescato = true;
+  dadoIndex = Math.floor(Math.random() * dadi.length);
+  mostra(`<div style="font-size:22px;">${t("pescato")}</div>`);
+});
+
+/* --- lancia --- */
+document.getElementById("lancia").addEventListener("click", ()=>{
+  if(!dadoPescato || dadoIndex === null){
+    alert(t("primaPesca"));
+    return;
+  }
+
+  const facciaIndex = Math.floor(Math.random() * 6);
+  const faccia = dadi[dadoIndex][facciaIndex];
+
+  const listaArcani = getArcani();
+  const arcano = listaArcani[Math.floor(Math.random() * listaArcani.length)];
+
+  const testo = combina(faccia.simbolo, arcano, faccia.archetipo);
+
+  mostra(`
+    <div style="font-size:18px; opacity:.8;">Dado: <b>${dadoIndex+1}</b> · Faccia: <b>${facciaIndex+1}</b></div>
+    <div style="margin-top:10px; font-size:26px;">${testo}</div>
+  `);
+
+  // reset (così devi ripescare)
+  dadoPescato = false;
+  dadoIndex = null;
+});
+
+/* --- cerca combinazione (vera) --- */
+document.getElementById("cerca").addEventListener("click", ()=>{
+  const selectParola = document.getElementById("selectParola");
+  const selectArcano = document.getElementById("selectArcano");
+  const risultatoCerca = document.getElementById("risultatoCerca");
+
+  const s = selectParola.value;
+  const a = selectArcano.value;
+
+  if(!s || !a){
+    risultatoCerca.innerHTML = `<div style="font-size:18px; opacity:.8;">${t("errore")}</div>`;
+    return;
+  }
+
+  // tipo faccia (se lo troviamo)
+  let tipo = "";
+  if(typeof dadi !== "undefined"){
+    outer:
+    for(const d of dadi){
+      for(const f of d){
+        if(f.simbolo === s){
+          tipo = f.archetipo || "";
+          break outer;
+        }
+      }
+    }
+  }
+
+  risultatoCerca.innerHTML = `<div style="font-size:22px;">${combina(s, a, tipo)}</div>`;
+});
+
+/* --- avvio --- */
+aggiornaTesti();
+aggiornaDropdownArcani();
+popolaSelectSimboli();
+</script>
+</body>
+</html>
