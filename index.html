@@ -400,7 +400,16 @@ let dadoIndex = null;
 function mostra(html){
   document.getElementById("risultato").innerHTML = html;
 }
-
+function combina(simbolo, arcanoLabel) {
+  return `
+    <div style="font-size:20px; margin-top:12px;">
+      <b>Messaggio della combinazione</b><br><br>
+      Il simbolo <b>${simbolo}</b> agisce dentro l’archetipo <b>${arcanoLabel}</b>.<br>
+      Chiediti: in che modo questo simbolo modifica, attiva o distorce
+      l’energia dell’arcano in questo momento?
+    </div>
+  `;
+}
 /* --- combina: qualunque simbolo + arcano --- */
 function combina(simbolo, arcanoLabel, tipoFaccia){
   const isEN = lingua === "en";
